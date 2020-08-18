@@ -1,7 +1,8 @@
 
 <?php
-require_once ('/Users/nk/github/doorkeys/bbs/conf.php');
-require_once ('/Users/nk/github/doorkeys/bbs/function.php');
+
+require_once ('/Users/nk/github/DoorKeys/conf.php');
+require_once ('/Users/nk/github/DoorKeys/function.php');
 
 session_start();
 $user_name = $_SESSION["NAME"];
@@ -13,7 +14,6 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
 }
 
 $bbs_table = array();
-$name = '';
 $text = '';
 $error = array();
 
@@ -27,7 +27,6 @@ $error = array();
   if ($request_method === 'POST') {
 
       //フォーム内容取得
-      $name = get_post_data('name');
       $text = get_post_data('text');
       $request = get_post_data('check');
 
@@ -44,7 +43,7 @@ $error = array();
       //var_dump($error);
 
       //書き込み内容を取得
-      $bbs_update = get_insert_bbs_table($name, $text,$request);
+      $bbs_update = get_insert_bbs_table($user_name, $text,$request);
 
       //エラーがない場合 クリエ実行
       if (count($error) === 0) {
@@ -65,33 +64,82 @@ $error = array();
 ?>
 
 <!DOCTYPE html>
-  <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>新入社員専用チャットDoorKey's</title>
-        <link rel="stylesheet" href="style/bbs.css">
-        <meta name="viewport" content="width=device-width">
-    </head>
-    <body>
-        <h1>掲示板</h1>
-        <form method="post">
-            <ul>
-                <?php
-                if (count($error) !== 0 ) {
-                    foreach($error as $error_msg) { ?>
-                    <li id="error"><?php print $error_msg; ?></li>
-                    <?php }
-                } ?>
-            </ul>
-            <label for="comment">ひとこと:  </label>
-            <input type="text" name="text" value="<?php $text ?>">
-            <input name="check" type="hidden" value="<?PHP print md5(microtime());?>">
-            <input type="submit" name="send" value="投稿">
-            <ul>
-                <?php foreach($bbs_data as $value) { ?>
-                <li><?php print $value['bbs_name']. '  '. $value['bbs_comment']. ' - '. $value['bbs_time']; ?></li>
-                <?php } ?>
-            </ul>
-        </form>
-    </body>
+<html lang="ja">
+<head>
+  <meta charset="UFT-8">
+  <title>ARG新人用掲示板-Doorkey's-</title>
+  <link rel="stylesheet" href="Style/stylesheet.css">
+</head>
+<body>
+  <header>
+      <div class="container">
+        <div class="login-text">
+        <?php echo 'ようこそ  '. entity_str($user_name). '  さん';?>
+        <a href="logout.php">ログアウトはこちら</a>
+        </div>
+        <!--ここに画像挿入-->
+      </div>
+  </header>
+  <main>
+   <div class="big-container">
+     <div class="main-container">
+       <a href="index.php">
+         <div class="side-box">
+           <p>HOME</p>
+         </div>
+       </a>
+       <a herf="#">
+         <div class="side-box">
+           <p>同期</p>
+         </div>
+       </a>
+       <a href="bbs.php">
+         <div class="side-box">
+           <p>広場</p>
+         </div>
+       </a>
+       <a href="#">
+       <div class="side-box">
+         <p>アンケート</p>
+       </div>
+       </a>
+       <a href="setting.php">
+         <div class="side-box">
+           <p>設定</p>
+         </div>
+       </a>
+       <a herf="#">
+         <div class="small-logo">
+          <img id="footer-logo-size" src="Images/logo-image.png">
+         </div>
+       </a>
+     </div>
+   <div class="sub-container">
+     <h1>掲示板</h1>
+     <form method="post">
+       <ul>
+         <?php
+         if (count($error) !== 0 ) {
+             foreach($error as $error_msg) { ?>
+             <li id="error"><?php print $error_msg; ?></li>
+             <?php }
+         } ?>
+       </ul>
+         <label for="comment">ひとこと:  </label>
+         <input type="text" name="text" value="<?php $text ?>">
+         <input name="check" type="hidden" value="<?PHP print md5(microtime());?>">
+         <input type="submit" name="send" value="投稿">
+       <ul>
+         <?php foreach($bbs_data as $value) { ?>
+         <li><?php print $value['bbs_name']. '  '. $value['bbs_comment']. ' - '. $value['bbs_time']; ?></li>
+         <?php } ?>
+       </ul>
+     </form>
+   </div>
+ </main>
+
+ <footer>
+   <p>copyright(c) & Debeloped  by ARG-ARQ:I.i K.k</p>
+ </footer>
+</body>
 </html>

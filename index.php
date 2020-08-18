@@ -13,6 +13,7 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -21,43 +22,49 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   <link rel="stylesheet" href="Style/stylesheet.css">
 </head>
 <body>
-
   <header>
       <div class="container">
+        <div class="login-text">
         <?php echo 'ようこそ  '. entity_str($user_name). '  さん';?>
         <a href="logout.php">ログアウトはこちら</a>
-        <img id="header-logo-size" src="Images/arg-back.png" >
+        </div>
+        <!--ここに画像挿入-->
       </div>
   </header>
-
-<main>
+  <main>
    <div class="big-container">
      <div class="main-container">
+       <a href="index.php">
+         <div class="side-box">
+           <p>HOME</p>
+         </div>
+       </a>
        <a herf="#">
          <div class="side-box">
-           <h1>HOME</h1>
+           <p>同期</p>
          </div>
        </a>
-       <a herf="public-place">
+       <a href="bbs.php">
          <div class="side-box">
-           <h1>同期</h1>
+           <p>広場</p>
          </div>
        </a>
+       <a href="#">
        <div class="side-box">
-         <a herf="bbs.php">DM</a>
+         <p>アンケート</p>
        </div>
-       <a herf="video">
+       </a>
+       <a href="setting.php">
          <div class="side-box">
-           <h1>動画</h1>
+           <p>設定</p>
          </div>
        </a>
        <a herf="#">
          <div class="small-logo">
-           <h1><img id="footer-logo-size" src="Images/logo-image.png"></h1>
+          <img id="footer-logo-size" src="Images/logo-image.png">
          </div>
        </a>
      </div>
-   </div>
    <div class="sub-container">
    </div>
  </main>

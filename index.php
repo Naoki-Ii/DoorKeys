@@ -6,10 +6,8 @@ require_once ('/Users/nk/github/DoorKeys/function.php');
 session_start();
 $user_name = $_SESSION["NAME"];
 
-if (isset($_SESSION["EMAIL"]) && (isset($_SESSION["NAME"]))) {//ログインしているとき
-    $msg = entity_str($user_name);
-
-} else {//ログインしていない時
+//ログインしていない場合　ログイン画面にリダイレクト
+if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   header('Location: http://localhost:8888/login.php');
   exit();
 }
@@ -45,11 +43,9 @@ if (isset($_SESSION["EMAIL"]) && (isset($_SESSION["NAME"]))) {//ログインし�
            <h1>同期</h1>
          </div>
        </a>
-       <a herf="dm">
-         <div class="side-box">
-           <h1>DM</h1>
-         </div>
-       </a>
+       <div class="side-box">
+         <a herf="bbs.php">DM</a>
+       </div>
        <a herf="video">
          <div class="side-box">
            <h1>動画</h1>

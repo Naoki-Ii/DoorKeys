@@ -3,6 +3,15 @@
 require_once ('/Users/nk/github/doorkeys/bbs/conf.php');
 require_once ('/Users/nk/github/doorkeys/bbs/function.php');
 
+session_start();
+$user_name = $_SESSION["NAME"];
+
+//ログインしていない場合　ログイン画面にリダイレクト
+if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
+  header('Location: http://localhost:8888/login.php');
+  exit();
+}
+
 $bbs_table = array();
 $name = '';
 $text = '';
@@ -14,7 +23,6 @@ $error = array();
   $link = get_db_connect($link);
   // リクエストメソッド取得
   $request_method = get_request_method();
-  //var_dump($request_method);
   //実行
   if ($request_method === 'POST') {
 
@@ -24,14 +32,8 @@ $error = array();
       $request = get_post_data('check');
 
       //エラーチェック
-      if (error_check_trim($name) !== true) {
-          $error[] = '名前を入力してください';
-      }
       if (error_check_trim($text) !== true) {
           $error [] = 'コメントを入力してください';
-      }
-      if (error_check_name_length($name) !== true) {
-          $error[] = '名前は１０文字以内で入力してください';
       }
       if (error_check_text_length($text) !== true) {
           $error[] = 'コメントは１００文字以内で入力してください';
@@ -81,8 +83,8 @@ $error = array();
                     <?php }
                 } ?>
             </ul>
-            名前:<input type="name" name="name" value="<?php $name ?>">
-            ひとこと:<input type="text" name="text" value="<?php $text ?>">
+            <label for="comment">ひとこと:  </label>
+            <input type="text" name="text" value="<?php $text ?>">
             <input name="check" type="hidden" value="<?PHP print md5(microtime());?>">
             <input type="submit" name="send" value="投稿">
             <ul>

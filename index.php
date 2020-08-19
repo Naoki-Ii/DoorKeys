@@ -9,6 +9,7 @@ $user_name = $_SESSION["NAME"];
 $email = $_SESSION["EMAIL"];
 $session_password = $_SESSION["PASSWORD"];
 $user_task = $_SESSION["TASK"];
+$user_img = $_SESSION["IMG"];
 
 $diary_table = array();
 
@@ -40,11 +41,12 @@ close_db_connect($link);
 <body>
   <header>
       <div class="container">
+        <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
         <div class="login-text">
+        <img src="<?php echo entity_str($user_img); ?>" alt="user_img">
         <?php echo 'ようこそ  '. entity_str($user_name). '  さん';?>
         <a href="logout.php">ログアウトはこちら</a>
         </div>
-        <!--ここに画像挿入-->
       </div>
   </header>
   <main>
@@ -75,12 +77,7 @@ close_db_connect($link);
            <p>設定</p>
          </div>
        </a>
-       <a herf="index.php">
-         <div class="small-logo">
-          <img id="footer-logo-size" src="Images/logo-image.png">
-         </div>
-       </a>
-     </div>
+    </div>
    <div class="sub-container">
      <div class="task_display">
        <h1>抱負</h1>

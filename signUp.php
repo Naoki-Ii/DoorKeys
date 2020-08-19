@@ -39,18 +39,19 @@ if ($request_method === 'POST') {
   if (error_check_pw_match($password, $password2) !==true){
     $error[] = 'パスワードが一致していません';
   }
+
   //書き込み内容を取得
-  $sign_up = get_insert_sign_up($username, $email,$password);
+  $sign_up = get_insert_sign_up($username, $email, $password);
   //エラーがない場合 クリエ実行
   if(count($error) === 0){
+
     $result = mysqli_query($link, $sign_up);
-    echo '登録完了-------';
+
     header('Location: http://localhost:8888/login.php');
     exit();
 
   }else{
-    echo '登録失敗--------';
-    var_dump($error);
+    $error[] = '登録失敗';
   }
 }
 
@@ -60,22 +61,41 @@ close_db_connect($link);
 <html lang="ja">
  <head>
    <meta charset="utf-8">
-   <title>Login</title>
+   <title>ARG新人用掲示板-Doorkey's-signup</title>
+   <link rel="stylesheet" href="Style/stylesheet.css">
  </head>
+ <header>
+     <div class="container">
+       <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+       </div>
+     </div>
+ </header>
  <body>
-   <h1>新規登録</h1>
-   <form method="POST"　action="signUp.php">
-     <label for="text">ユーザー名</label>
-     <input type="text" name="username">
-     <label for="email">メールアドレス</label>
-     <input type="email" name="email">
-     <label for="password">パスワード</label>
-     <input type="password" name="password">
-     <label for="password2">パスワード再入力</label>
-     <input type="password" name="password2">
-     <input type="submit" name="signup" value="登録">
-     <p>※パスワードは半角英数字をそれぞれ１文字以上含んだ、８文字以上で設定してください。</p>
-   </form>
-   <a href="login.php">ログインはこちら</a>
+   <div class="session">
+     <h1>新規登録</h1>
+     <ul>
+       <?php
+       if (count($error) !== 0 ) {
+           foreach($error as $error_msg) { ?>
+           <li id="error"><?php print $error_msg; ?></li>
+           <?php }
+       } ?>
+     </ul>
+     <form method="POST"　action="signUp.php">
+       <label for="text">ユーザー名</label>
+       <input type="text" name="username">
+       <label for="email">メールアドレス</label>
+       <input type="email" name="email">
+       <label for="password">パスワード</label>
+       <input type="password" name="password">
+       <label for="password2">パスワード再入力</label>
+       <input type="password" name="password2">
+       <button type="submit" name="button">登録</button>
+     </form>
+     <p><a href="login.php">ログインはこちら</a></p>
+   </div>
  </body>
+ <footer>
+   <p>copyright(c) & Debeloped  by ARG-ARQ:I.i K.k</p>
+ </footer>
 </html>

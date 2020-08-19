@@ -10,6 +10,7 @@ $user_name = $_SESSION["NAME"];
 $email = $_SESSION["EMAIL"];
 $session_password = $_SESSION["PASSWORD"];
 $user_task = $_SESSION["TASK"];
+$user_img = $_SESSION["IMG"];
 
 //ログインしていない場合　ログイン画面にリダイレクト
 if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
@@ -76,11 +77,12 @@ $text = '';
 <body>
   <header>
       <div class="container">
+        <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
         <div class="login-text">
+        <img src="<?php echo entity_str($user_img); ?>" alt="user_img">
         <?php echo 'ようこそ  '. entity_str($user_name). '  さん';?>
         <a href="logout.php">ログアウトはこちら</a>
         </div>
-        <!--ここに画像挿入-->
       </div>
   </header>
   <main>
@@ -109,11 +111,6 @@ $text = '';
        <a href="setting.php">
          <div class="side-box">
            <p>設定</p>
-         </div>
-       </a>
-       <a herf="index.php">
-         <div class="small-logo">
-          <img id="footer-logo-size" src="Images/logo-image.png">
          </div>
        </a>
      </div>

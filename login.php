@@ -27,11 +27,13 @@ if ($request_method === 'POST') {
   if (count($error) === 0){
     $user_name = get_userdata_name($link, $email);
     $user_task = get_userdata_task($link, $email);
+    $user_img = get_userdata_img($link, $email);
 
     $_SESSION["EMAIL"] = $email;
     $_SESSION["NAME"] = $user_name;
     $_SESSION["PASSWORD"] = $password;
     $_SESSION["TASK"] = $user_task;
+    $_SESSION["IMG"] = $user_img;
 
     header('Location: http://localhost:8888/index.php');
     exit();
@@ -49,25 +51,37 @@ close_db_connect($link);
 <html lang="ja">
  <head>
    <meta charset="utf-8">
-   <title>Login</title>
+   <link rel="stylesheet" href="Style/stylesheet.css">
+   <title>ARG新人用掲示板-Doorkey's-Login</title>
  </head>
- <body>
-   <h1>ようこそ、ログインしてください。</h1>
-   <ul>
-      <?php
-      if (count($error) !== 0 ) {
-          foreach($error as $error_msg) { ?>
-          <li id="error"><?php print $error_msg; ?></li>
-          <?php }
-      } ?>
-    </ul>
-   <form  action="login.php" method="post">
-     <label for="email">メールアドレス</label>
-     <input type="email" name="email">
-     <label for="password">パスワード</label>
-     <input type="password" name="password">
-     <button type="submit">ログイン</button>
-   </form>
-   <a href="signUp.php">新規登録はこちら</a>
+   <body>
+     <header>
+         <div class="container">
+           <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+           </div>
+         </div>
+     </header>
+    <div class="session">
+      <h1>ようこそ、ログインしてください。</h1>
+      <ul>
+        <?php
+        if (count($error) !== 0 ) {
+            foreach($error as $error_msg) { ?>
+            <li id="error"><?php print $error_msg; ?></li>
+            <?php }
+        } ?>
+      </ul>
+     <form  action="login.php" method="post">
+       <label for="email">メールアドレス</label>
+       <input type="email" name="email">
+       <label for="password">パスワード</label>
+       <input type="password" name="password">
+       <button type="submit">ログイン</button>
+     </form>
+     <p><a href="signUp.php">新規登録はこちら</a></p>
+    </div>
  </body>
+ <footer>
+   <p>copyright(c) & Debeloped  by ARG-ARQ:I.i K.k</p>
+ </footer>
 </html>

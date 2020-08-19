@@ -8,6 +8,7 @@ $user_name = $_SESSION["NAME"];
 $email = $_SESSION["EMAIL"];
 $session_password = $_SESSION["PASSWORD"];
 $user_task = $_SESSION["TASK"];
+$user_img = $_SESSION["IMG"];
 
 //ログインしていない場合　ログイン画面にリダイレクト
 if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
@@ -73,6 +74,32 @@ if ($request_method === 'POST') {
     }
   }
 
+  //トップ画像変更の場合のみ実行
+  if(isset($_POST['submit_img']) === TRUE){
+
+    $img = get_file_data('img');
+    //var_dump($img);
+    //ファイルアップロード
+    $res= get_input_image('img', UPLOADPATH);
+    //var_dump($res);
+
+    if (mb_strlen($img['name']) === 0) {
+      $error [] = '画像が選択されていません';
+    }
+    if ($res['status'] === false) {
+        $error [] = 'ファイル形式が間違っています';
+    }
+
+    if(count($error) === 0){
+      $new_img = change_data_img($link, UPLOADPATH. $res['status'], $email);
+
+      $_SESSION["IMG"] = $new_img;
+
+      $user_img = $_SESSION["IMG"];
+
+      $msg[] = '画像変更完了';
+    }
+  }
   //ユーザー名変更の場合のみ実行
   if(isset($_POST['submit_user']) === TRUE){
 
@@ -160,11 +187,12 @@ close_db_connect($link);
 <body>
   <header>
       <div class="container">
+        <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
         <div class="login-text">
+        <img src="<?php echo entity_str($user_img); ?>" alt="user_img">
         <?php echo 'ようこそ  '. entity_str($user_name). '  さん';?>
         <a href="logout.php">ログアウトはこちら</a>
         </div>
-        <!--ここに画像挿入-->
       </div>
   </header>
   <main>
@@ -195,11 +223,6 @@ close_db_connect($link);
            <p>設定</p>
          </div>
        </a>
-       <a herf="index.php">
-         <div class="small-logo">
-          <img id="footer-logo-size" src="Images/logo-image.png">
-         </div>
-       </a>
      </div>
    <div class="sub-container">
      <ul>
@@ -228,6 +251,12 @@ close_db_connect($link);
        <input type="text" name="comment" value="">
        <input type="hidden" name="check" value="<?PHP print md5(microtime());?>">
        <input type="submit" name="submit_diary" value="追加">
+     </form>
+     <form method="post" enctype="multipart/form-data">
+       <h1>トップ画像変更</h1>
+       <img src="<?php echo entity_str($user_img);?>" alt="user_img" width="100px">
+       <input type="file" name="img">
+       <input type="submit" name="submit_img" value="変更">
      </form>
      <form method="post">
        <h1>ユーザー名の変更</h1>

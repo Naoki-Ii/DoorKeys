@@ -5,7 +5,11 @@ require_once ('/Users/nk/github/DoorKeys/conf.php');
 require_once ('/Users/nk/github/DoorKeys/function.php');
 
 session_start();
+
 $user_name = $_SESSION["NAME"];
+$email = $_SESSION["EMAIL"];
+$session_password = $_SESSION["PASSWORD"];
+$user_task = $_SESSION["TASK"];
 
 //ログインしていない場合　ログイン画面にリダイレクト
 if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
@@ -15,8 +19,6 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
 
 $bbs_table = array();
 $text = '';
-$error = array();
-
 //echo "request---". $_REQUEST['check']. "\n";
 
   //データベース接続
@@ -48,6 +50,7 @@ $error = array();
       //エラーがない場合 クリエ実行
       if (count($error) === 0) {
           $result = mysqli_query($link, $bbs_update);
+          $msg[] = '投稿完了';
       }
   }
 
@@ -55,7 +58,7 @@ $error = array();
   $bbs_data = get_bbs_table_list($link);
 
   //特殊文字をエンティティに変換
-  $bbs_table = entity_assoc_array($bbs_table);
+  $bbs_table = entity_assoc_array($bbs_data);
 
   $_SESSION["check"] = $check = mt_rand();
   //データベース切断
@@ -88,7 +91,7 @@ $error = array();
            <p>HOME</p>
          </div>
        </a>
-       <a herf="#">
+       <a href="friend.php">
          <div class="side-box">
            <p>同期</p>
          </div>
@@ -98,7 +101,7 @@ $error = array();
            <p>広場</p>
          </div>
        </a>
-       <a href="#">
+       <a href="question.php">
        <div class="side-box">
          <p>アンケート</p>
        </div>
@@ -108,7 +111,7 @@ $error = array();
            <p>設定</p>
          </div>
        </a>
-       <a herf="#">
+       <a herf="index.php">
          <div class="small-logo">
           <img id="footer-logo-size" src="Images/logo-image.png">
          </div>
@@ -121,16 +124,23 @@ $error = array();
          <?php
          if (count($error) !== 0 ) {
              foreach($error as $error_msg) { ?>
-             <li id="error"><?php print $error_msg; ?></li>
+             <li id="error"><?php echo $error_msg; ?></li>
              <?php }
          } ?>
+         <?php
+         if (count($msg) !==0){
+           foreach ($msg as $msg_display) { ?>
+             <li id="success"><?php echo $msg_display; ?></li>
+           <?php }
+         }?>
+
        </ul>
          <label for="comment">ひとこと:  </label>
          <input type="text" name="text" value="<?php $text ?>">
          <input name="check" type="hidden" value="<?PHP print md5(microtime());?>">
          <input type="submit" name="send" value="投稿">
        <ul>
-         <?php foreach($bbs_data as $value) { ?>
+         <?php foreach($bbs_table as $value) { ?>
          <li><?php print $value['bbs_name']. '  '. $value['bbs_comment']. ' - '. $value['bbs_time']; ?></li>
          <?php } ?>
        </ul>

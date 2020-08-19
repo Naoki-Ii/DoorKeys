@@ -25,14 +25,18 @@ if ($request_method === 'POST') {
     $error[] = 'メールアドレス又はパスワードが間違っています。3';
   }
   if (count($error) === 0){
-    $user_name = get_userdata_name($link,$email);
+    $user_name = get_userdata_name($link, $email);
+    $user_task = get_userdata_task($link, $email);
+
     $_SESSION["EMAIL"] = $email;
     $_SESSION["NAME"] = $user_name;
     $_SESSION["PASSWORD"] = $password;
+    $_SESSION["TASK"] = $user_task;
+
     header('Location: http://localhost:8888/index.php');
     exit();
   } else{
-    echo 'ログイン失敗';
+    $error[] = 'ログイン失敗';
     //var_dump($error);
   }
 }

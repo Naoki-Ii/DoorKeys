@@ -32,12 +32,10 @@ header {
 
 }
 
-.name-color{
- font-size: 20px;
- color: #895a1b;
-}
+
 
 #footer-logo-size{
+  margin-top: 100px;
   width:200px;
 }
 
@@ -48,37 +46,20 @@ header {
   float:left;
   margin-right: 20px;
   padding: 20px;
-  width:300px;
   height:700px;
   margin-right: 20px;
   border-bottom:1.25px solid #895a1b;
   border-right:2.5px solid #895a1b;
 
 }
-
-.sub-container {
-  float:left;
-  padding: 20px;
-  width:1000px;
-  height:700px;
-  background: #dbcc88;
-
-
-
-  border-radius:10px solid #895a1b;
-
-}
-
-a{
-   text-decoration: none;
-}
 .side-box{
   border-bottom:1px solid #895a1b;
   width: 100%;
+  margin-top: 40px;
   background-color: #fff3a9;
   color:#895a1b;
   text-align: left;
-  font-size: 20px;
+  font-size: 40px;
 }
 .side-box:hover{
   background-color: #dbcc88;
@@ -86,6 +67,26 @@ a{
 .small-logo{
   float:center;
 }
+
+.sub-container {
+  float:left;
+  margin-left: 80px ;
+  padding: 20px;
+  width:1000px;
+  height:700px;
+  background: #dbcc88;
+}
+.my-face {
+border:2.5px solid #ffffff
+width:20px;
+height: 20px;
+margin: 0 20px 0 20px;
+text-align: center;
+}
+a{
+   text-decoration: none;
+}
+
 
 
 

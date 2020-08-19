@@ -7,6 +7,7 @@ session_start();
 $user_name = $_SESSION["NAME"];
 $email = $_SESSION["EMAIL"];
 $session_password = $_SESSION["PASSWORD"];
+$user_task = $_SESSION["TASK"];
 
 //ログインしていない場合　ログイン画面にリダイレクト
 if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
@@ -20,6 +21,57 @@ $link = get_db_connect($link);
 $request_method = get_request_method();
 //実行
 if ($request_method === 'POST') {
+
+
+  //抱負の変更の場合のみ実行
+  if(isset($_POST['submit_task']) === TRUE){
+    $comment = get_post_data('comment');
+
+    //エラーチェック
+    //エラーチェック
+    if (error_check_trim($comment) !== true) {
+        $error [] = '抱負を入力してください';
+    }
+    if (error_check_text_length($comment) !== true) {
+        $error[] = '抱負は１００文字以内で入力してください';
+    }
+
+    if(count($error) === 0){
+      $new_task = change_data_task($link, $comment, $email);
+
+      $_SESSION["TASK"] = $new_task;
+
+      $user_task = $_SESSION["TASK"];
+
+      $msg[] = '変更完了';
+    }
+  }
+
+  //予定の追加の場合ののみ実行
+  if(isset($_POST['submit_diary']) === TRUE){
+    $comment = get_post_data('comment');
+    $request = get_post_data('check');
+
+    //エラーチェック
+    if (error_check_trim($comment) !== true) {
+        $error [] = '予定を入力してください';
+    }
+    if (error_check_text_length($comment) !== true) {
+        $error[] = '予定は１００文字以内で入力してください';
+    }
+    if(error_check_duplication_diary($link, $request) !== true){
+      $error[] = 'リロード完了';
+    }
+
+    //エラーがない場合実行
+    if(count($error) === 0){
+
+      //書き込み内容取得
+      $comment_update = get_insert_diary($email, $comment, $request);
+      $result = mysqli_query($link, $comment_update);
+      $msg[] = '追加完了';
+    }
+  }
 
   //ユーザー名変更の場合のみ実行
   if(isset($_POST['submit_user']) === TRUE){
@@ -43,9 +95,8 @@ if ($request_method === 'POST') {
     $_SESSION["NAME"] = $new_user_name;
 
     $user_name = $_SESSION["NAME"];
-    echo 'ユーザー名変更完了';
-    }else{
-      echo 'ユーザー名変更失敗';
+
+    $msg[] = 'ユーザー名変更完了';
     }
 
 
@@ -88,13 +139,12 @@ if ($request_method === 'POST') {
 
       $session_password = $_SESSION["PASSWORD"];
 
-      echo 'パスワード変更完了';
-    }else{
-      echo 'パスワード変更失敗';
+      $msg[] = 'パスワード変更完了';
     }
 
   }
 }
+$_SESSION["check"] = $check = mt_rand();
 
 close_db_connect($link);
 
@@ -125,7 +175,7 @@ close_db_connect($link);
            <p>HOME</p>
          </div>
        </a>
-       <a herf="#">
+       <a href="friend.php">
          <div class="side-box">
            <p>同期</p>
          </div>
@@ -135,7 +185,7 @@ close_db_connect($link);
            <p>広場</p>
          </div>
        </a>
-       <a href="#">
+       <a href="question.php">
        <div class="side-box">
          <p>アンケート</p>
        </div>
@@ -145,13 +195,40 @@ close_db_connect($link);
            <p>設定</p>
          </div>
        </a>
-       <a herf="#">
+       <a herf="index.php">
          <div class="small-logo">
           <img id="footer-logo-size" src="Images/logo-image.png">
          </div>
        </a>
      </div>
    <div class="sub-container">
+     <ul>
+       <?php
+       if (count($error) !== 0 ) {
+           foreach($error as $error_msg) { ?>
+           <li id="error"><?php print $error_msg; ?></li>
+           <?php }
+       } ?>
+       <?php
+       if (count($msg) !==0){
+         foreach ($msg as $msg_display) { ?>
+           <li id="success"><?php echo $msg_display; ?></li>
+         <?php }
+       }?>
+     </ul>
+     <form method="post" class="task">
+       <h1>抱負の変更</h1>
+       <label for="text">抱負の内容</label>
+       <input type="text" name="comment" value="<?php echo entity_str($user_task); ?>">
+       <input type="submit" name="submit_task" value="更新">
+     </form>
+     <form method="post" class="diary">
+       <h1>今日の予定</h1>
+       <label for="text">予定の追加</label>
+       <input type="text" name="comment" value="">
+       <input type="hidden" name="check" value="<?PHP print md5(microtime());?>">
+       <input type="submit" name="submit_diary" value="追加">
+     </form>
      <form method="post">
        <h1>ユーザー名の変更</h1>
        <p>現在のユーザー名:  <?php echo entity_str($user_name); ?></p>

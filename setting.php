@@ -186,13 +186,11 @@ close_db_connect($link);
 </head>
 <body>
   <header>
-      <div class="container">
-        <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
-        <div class="login-text">
+      <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+      <div class="login-text">
         <img src="<?php echo entity_str($user_img); ?>" alt="user_img">
         <?php echo 'ようこそ  '. entity_str($user_name). '  さん';?>
         <a href="logout.php">ログアウトはこちら</a>
-        </div>
       </div>
   </header>
   <main>
@@ -225,6 +223,7 @@ close_db_connect($link);
        </a>
      </div>
    <div class="sub-container">
+     <div class="setting_display">
      <ul>
        <?php
        if (count($error) !== 0 ) {
@@ -239,45 +238,46 @@ close_db_connect($link);
          <?php }
        }?>
      </ul>
-     <form method="post" class="task">
-       <h1>抱負の変更</h1>
-       <label for="text">抱負の内容</label>
-       <input type="text" name="comment" value="<?php echo entity_str($user_task); ?>">
-       <input type="submit" name="submit_task" value="更新">
-     </form>
-     <form method="post" class="diary">
-       <h1>今日の予定</h1>
-       <label for="text">予定の追加</label>
-       <input type="text" name="comment" value="">
-       <input type="hidden" name="check" value="<?PHP print md5(microtime());?>">
-       <input type="submit" name="submit_diary" value="追加">
-     </form>
-     <form method="post" enctype="multipart/form-data">
-       <h1>トップ画像変更</h1>
-       <img src="<?php echo entity_str($user_img);?>" alt="user_img" width="100px">
-       <input type="file" name="img">
-       <input type="submit" name="submit_img" value="変更">
-     </form>
-     <form method="post">
-       <h1>ユーザー名の変更</h1>
-       <p>現在のユーザー名:  <?php echo entity_str($user_name); ?></p>
-       <label for="name">新しいユーザー名</label>
-       <input type="name" name="username" value="">
-       <label for="password">パスワードを入力</label>
-       <input type="password" name="password" value="">
-       <input type="submit" name="submit_user" value="変更">
-     </form>
-     <form method="post">
-       <h1>パスワードの変更</h1>
-       <label for="password">現在のパスワードを入力</label>
-       <input type="password" name="password" value="">
-       <label for="newpassword1">新しいパスワード</label>
-       <input type="password" name="newpassword1" value="">
-       <label for="newpassword2">新しいパスワード(再入力)</label>
-       <input type="password" name="newpassword2" value="">
-       <input type="submit" name="submit_password" value="変更">
-     </form>
-   </div>
+       <form method="post" class="task">
+         <h1>抱負</h1>
+         <textarea name="comment" rows="3" cols="50"><?php echo entity_str($user_task); ?></textarea>
+         <button type="submit" name="submit_task">更新</button>
+       </form>
+       <form method="post" class="diary">
+         <h1>予定</h1>
+         <input type="text" name="comment" value="">
+         <input type="hidden" name="check" value="<?PHP print md5(microtime());?>">
+         <button type="submit" name="submit_diary">追加</button>
+       </form>
+       <form method="post" enctype="multipart/form-data">
+         <h1>メイン画像変更</h1>
+         <img src="<?php echo entity_str($user_img);?>" alt="user_img" width="100px">
+         <input type="file" name="img">
+         <button type="submit" name="submit_img">変更</button>
+       </form>
+       <div class="psw_display">
+         <form method="post">
+           <h1>ユーザー名変更</h1>
+           <p>現在のユーザー名:  <?php echo entity_str($user_name); ?></p>
+           <label for="name">新しいユーザー名</label>
+           <input type="name" name="username" value="">
+           <label for="password">パスワードを入力</label>
+           <input type="password" name="password" value="">
+           <button type="submit" name="submit_user">変更</button>
+         </form>
+         <form method="post">
+           <h1>パスワード変更</h1>
+           <label for="password">現在のパスワードを入力</label>
+           <input type="password" name="password" value="">
+           <label for="newpassword1">新しいパスワード</label>
+           <input type="password" name="newpassword1" value="">
+           <label for="newpassword2">新しいパスワード(再入力)</label>
+           <input type="password" name="newpassword2" value="">
+           <button type="submit" name="submit_password">変更</button>
+         </form>
+       </div>
+     </div>
+    </div>
  </main>
 
  <footer>

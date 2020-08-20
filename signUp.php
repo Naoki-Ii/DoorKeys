@@ -64,13 +64,13 @@ close_db_connect($link);
    <title>ARG新人用掲示板-Doorkey's-signup</title>
    <link rel="stylesheet" href="Style/stylesheet.css">
  </head>
- <header>
-     <div class="container">
-       <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
-       </div>
-     </div>
- </header>
  <body>
+   <header>
+       <div class="container">
+         <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+         </div>
+       </div>
+   </header>
    <div class="session">
      <h1>新規登録</h1>
      <ul>

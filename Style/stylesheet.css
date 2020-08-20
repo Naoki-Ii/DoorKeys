@@ -1,49 +1,48 @@
+/*全体のcss*/
 body,html{width: 100%;height: 100%;}
 
 h1,h2,h3,h4,h5,p,ul,ol,li,dl,dt,dd,form,figure,form,input,textarea {margin: 0px;padding: 0px;font-size: 100%;font-weight: normal;}
 ul {list-style-type: none;}
 table {border-collapse:collapse;font-size: 100%;border-spacing: 0;}
 iframe {width: 100%;}
-
+a{text-decoration: none;}
 body {
   margin: 0 auto;
   background:#fff3a9;
   font-family:"游明朝",YuMincho,"ヒラギノ明朝　ProN W3","Hiragino Mincho ProN","HG明朝E","MS P明朝","MS 明朝",serif;
 }
-header img{
-  height: 90px;
-}
-header #logo_img img{
-  height:120px;
-  float:left;
-}
 
-
-.login-text{
-  text-align: right;
-}
+/*header 共通css*/
 header {
-  height:130px;
+  height: 120px;
   background-color:#fffddb;
   padding: 15px 15px 0px 15px;
   border-bottom:2.5px solid #895a1b;
+  text-align: center;
 }
 
-.container{
-    text-align: center;
+header img{
+  height:90px;
 }
- .big-container {
-  overflow:hidden;
+header #logo_img img{
+  height: 120px;
+  float:left;
+}
+header .login-text{
+  float:right;
+  text-align: right;
+}
+
+/*headerより下の内容*/
+ main .big-container {
   display: flex;
 }
+
+/*メニューバーのcss*/
 .main-container{
   float:left;
   padding: 20px;
-  height:700px;
-
-  border-right:2.5px solid #895a1b;
   flex: 1;
-
 }
 .side-box{
   border-bottom:1px solid #895a1b;
@@ -55,52 +54,37 @@ header {
 .side-box:hover{
   background-color: #dbcc88;
 }
-.small-logo{
-  float:center;
-}
 
+
+/*メインコンテンツ　共通css*/
 .sub-container {
   float:left;
-  padding: 20px;
-  height:700px;
+  padding: 30px;
   background: #dbcc88;
   flex: 3;
+  border-left:2.5px solid #895a1b;
+  overflow-y:scroll;
+  height: 520px;
 }
 
-.task_display {
-width:auto;
-height: 45%;
-margin: 20px;
-border-radius:15px 15px 15px 15px;
-background-color: #ffffff;
-padding:10px;
-
+/*メッセージ　カラー*/
+#error{
+  color: #ff0000;
 }
-
-.diary_display {
-width:auto;
-height: 45%;
-margin: 20px;
-border-radius:15px 15px 15px 15px;
-background-color: #ffffff;
-padding:10px;
+#msg{
+  color: #0000ff;
 }
 
 .sub-container h1 {
-font-size: 20px;
-color: #895a1b;
+font-size: 30px;
 text-align: center;
-
+background-color:  #895a1b;
+color: #ffffff;
+border-radius: 15px;
+margin: 10px 15px 15px 15px;
 }
 
-.logo-box {
-  text-align: center;
-}
-
-a{
-   text-decoration: none;
-}
-
+/*footer　共通css*/
 footer{
   border-top:2.5px solid #895a1b;
   padding-top: 20px;
@@ -113,9 +97,147 @@ footer p{
   font-size: 10px;
 }
 
+/*index.phpの表示css*/
+.task_display {
+margin: 0 auto;
+margin-bottom: 30px;
+border-radius:15px;
+background-color: #ffffff;
+padding:10px;
+text-align: center;
 
+}
 
+.task_display p{
+  font-size: 25px;
+  margin: 10px;
+}
+.diary_display {
+margin: 0 auto;
+border-radius:15px;
+background-color: #ffffff;
+padding:10px;
+}
 
+.diary_display li{
+  margin-left: 50px;
+  font-size: 20px;
+  margin-top: 10px;
+  list-style-type: disc;
+}
+
+/*friend.phpの表示css*/
+
+.friend-list {
+  font-size: 15px;
+}
+.friend-list img{
+  height: 70px;
+}
+
+.friend-list .friend-name{
+  font-size: 30px;
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+.friend-task{
+  width: 700px;
+  word-wrap: break-word;
+  display: inline-block;
+}
+.friend-list li {
+  margin:0 auto;
+  margin-bottom: 30px;
+  padding: 15px;
+  display: block;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+}
+
+/*bbs表示用css*/
+.bbs_display {
+margin: 0 auto;
+border-radius:15px;
+background-color: #ffffff;
+padding:10px;
+font-size: 25px;
+text-align: center;
+}
+
+.bbs_display form {
+  margin-top: 20px;
+}
+
+.bbs_display input{
+  font-size: 30px;
+  margin: 10px;
+  width: 600px;
+}
+
+.bbs_display button{
+  font-size: 23px;
+}
+.bbs_display #bbs_display_li{
+  text-align: left;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.bbs_display img{
+  height: 40px;
+  margin: 10px;
+}
+.bbs_display .bbs_name{
+  font-size: 30px;
+}
+.bbs_display .bbs_comment{
+  text-align: left;
+  display: inline-block;
+  width: 800px;
+  word-wrap: break-word;
+  margin-left: 100px;
+}
+.bbs_display p{
+  text-align: right;
+}
+/*question.php表示用 css*/
+
+/*setting.php表示用の css*/
+.setting_display {
+  background-color: #ffffff;
+  margin:0 auto;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+}
+.setting_display label{
+  font-size: 25px;
+  margin: 10px;
+}
+
+.setting_display input{
+  font-size: 25px;
+  margin: 0 auto;
+}
+
+.setting_display button{
+  font-size: 20px;
+  margin: 10px;
+}
+
+.setting_display textarea{
+  font-size: 25px;
+}
+
+.setting_display .psw_display label{
+  display: block;
+}
+.setting_display .psw_display input{
+  display: block;
+}
+.setting
+/*loginページのcss*/
 .session{
   width: 500px;
   margin: auto;
@@ -156,7 +278,6 @@ footer p{
   margin:10px;
 }
 .session #error{
-  color: red;
   font-size: 15px;
   text-align: left;
   margin-left:30px;

@@ -17,6 +17,16 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   exit();
 }
 
+//データベース接続
+$link = get_db_connect($link);
+//ユーザー一覧内容取得
+$user_list = get_user_table_list($link, $email);
+
+//特殊文字をエンティティに変換
+$user_table = entity_assoc_array($user_list);
+
+//データベース切断
+close_db_connect($link);
 ?>
 
 <!DOCTYPE html>
@@ -28,13 +38,11 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
 </head>
 <body>
   <header>
-      <div class="container">
-        <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
-        <div class="login-text">
+      <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+      <div class="login-text">
         <img src="<?php echo entity_str($user_img); ?>" alt="user_img">
         <?php echo 'ようこそ  '. entity_str($user_name). '  さん';?>
         <a href="logout.php">ログアウトはこちら</a>
-        </div>
       </div>
   </header>
   <main>
@@ -67,6 +75,16 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
        </a>
      </div>
    <div class="sub-container">
+     <div class="friend-list">
+       <ul><?php  foreach ($user_table as $value){?>
+         <li>
+           <img src="<?php echo $value['user_img'];?>">
+           <span class="friend-name"><?php echo $value['user_name'];?></span>
+           <span class="friend-task"><?php echo $value['user_task'];?></span>
+         </li>
+       <?php }?>
+       </ul>
+     </div>
    </div>
  </main>
 

@@ -46,7 +46,7 @@ $text = '';
       //var_dump($error);
 
       //書き込み内容を取得
-      $bbs_update = get_insert_bbs_table($user_name, $text,$request);
+      $bbs_update = get_insert_bbs_table($user_name, $text,$request, $email);
 
       //エラーがない場合 クリエ実行
       if (count($error) === 0) {
@@ -76,13 +76,11 @@ $text = '';
 </head>
 <body>
   <header>
-      <div class="container">
-        <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
-        <div class="login-text">
+      <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+      <div class="login-text">
         <img src="<?php echo entity_str($user_img); ?>" alt="user_img">
         <?php echo 'ようこそ  '. entity_str($user_name). '  さん';?>
         <a href="logout.php">ログアウトはこちら</a>
-        </div>
       </div>
   </header>
   <main>
@@ -115,6 +113,7 @@ $text = '';
        </a>
      </div>
    <div class="sub-container">
+     <div class="bbs_display">
      <h1>掲示板</h1>
      <form method="post">
        <ul>
@@ -135,13 +134,19 @@ $text = '';
          <label for="comment">ひとこと:  </label>
          <input type="text" name="text" value="<?php $text ?>">
          <input name="check" type="hidden" value="<?PHP print md5(microtime());?>">
-         <input type="submit" name="send" value="投稿">
+         <button type="submit" name="send">投稿</button>
        <ul>
          <?php foreach($bbs_table as $value) { ?>
-         <li><?php print $value['bbs_name']. '  '. $value['bbs_comment']. ' - '. $value['bbs_time']; ?></li>
-         <?php } ?>
+         <li id="bbs_display_li">
+           <span class="bbs_name"><img src="<?php echo $value['user_img'];?>" alt="user_img"><?php echo $value['bbs_name']; ?></span>
+           <div>
+             <span class="bbs_comment"><?php  echo $value['bbs_comment'];?></span>
+           </div>
+           <p><?php echo $value['bbs_time'];}?></p>
+        </li>
        </ul>
      </form>
+   </div>
    </div>
  </main>
 

@@ -40,13 +40,11 @@ close_db_connect($link);
 </head>
 <body>
   <header>
-      <div class="container">
-        <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
-        <div class="login-text">
+      <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+      <div class="login-text">
         <img src="<?php echo entity_str($user_img); ?>" alt="user_img">
         <?php echo 'ようこそ  '. entity_str($user_name). '  さん';?>
         <a href="logout.php">ログアウトはこちら</a>
-        </div>
       </div>
   </header>
   <main>
@@ -92,6 +90,7 @@ close_db_connect($link);
        </ul>
      </div>
    </div>
+ </div>
  </main>
 
  <footer>

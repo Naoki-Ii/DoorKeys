@@ -9,33 +9,31 @@ $link = get_db_connect($link);
 $request_method = get_request_method();
 
 if ($request_method === 'POST') {
-  $email = get_post_data('email');
-  $password = get_post_data('password');
+  $tool_email = get_post_data('email');
+  $tool_password = get_post_data('password');
 
-  if (error_check_validata($email) !== true){
+  if (error_check_validata($tool_email) !== true){
     $error[] = '入力された値が不正です。';
   }
-  if (error_check_duplication_login($link, $email) === true){
+  if (error_check_duplication_login_tool($link, $tool_email) === true){
     $error[] = 'メールアドレス又はパスワードが間違っています。1';
   }
-  if (error_check_duplication_pw($link, $password) === true){
+  if (error_check_duplication_pw_tool($link, $tool_password) === true){
     $error[] = 'メールアドレス又はパスワードが間違っています。2';
   }
-  if (error_check_userdata_compare($link, $email, $password) !== true){
+  if (error_check_userdata_compare_tool($link, $tool_email, $tool_password) !== true){
     $error[] = 'メールアドレス又はパスワードが間違っています。3';
   }
   if (count($error) === 0){
-    $user_name = get_userdata_name($link, $email);
-    $user_task = get_userdata_task($link, $email);
-    $user_img = get_userdata_img($link, $email);
+    $tool_name = get_userdata_name_tool($link, $tool_email);
+    $tool_img = get_userdata_img_tool($link, $tool_email);
 
-    $_SESSION["EMAIL"] = $email;
-    $_SESSION["NAME"] = $user_name;
-    $_SESSION["PASSWORD"] = $password;
-    $_SESSION["TASK"] = $user_task;
-    $_SESSION["IMG"] = $user_img;
+    $_SESSION["EMAIL_TOOL"] = $tool_email;
+    $_SESSION["NAME_TOOL"] = $tool_name;
+    $_SESSION["PASSWORD_TOOL"] = $tool_password;
+    $_SESSION["IMG_TOOL"] = $tool_img;
 
-    header('Location: http://localhost:8888/index.php');
+    header('Location: http://localhost:8888/tool.php');
     exit();
   } else{
     $error[] = 'ログイン失敗';
@@ -52,7 +50,7 @@ close_db_connect($link);
  <head>
    <meta charset="utf-8">
    <link rel="stylesheet" href="Style/stylesheet.css">
-   <title>ARG新人用掲示板-Doorkey's-Login</title>
+   <title>ARG新人用掲示板-Doorkey's-Login(管理画面)</title>
  </head>
    <body>
      <header>
@@ -61,7 +59,7 @@ close_db_connect($link);
           </div>
      </header>
     <div class="session">
-      <h1>ようこそ、ログインしてください。</h1>
+      <h1>管理　ログイン</h1>
       <ul>
         <?php
         if (count($error) !== 0 ) {
@@ -70,7 +68,7 @@ close_db_connect($link);
             <?php }
         } ?>
       </ul>
-     <form  action="login.php" method="post">
+     <form method="post">
        <label for="email">メールアドレス</label>
        <input type="email" name="email" value="<?php echo entity_str($email); ?>">
        <label for="password">パスワード</label>

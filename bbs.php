@@ -115,7 +115,7 @@ $text = '';
    <div class="sub-container">
      <div class="bbs_display">
      <h1>掲示板</h1>
-     <form method="post">
+     <form class="bbs_display_form" method="post">
        <ul>
          <?php
          if (count($error) !== 0 ) {

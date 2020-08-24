@@ -3,6 +3,18 @@ require_once ('/Users/nk/github/DoorKeys/conf.php');
 require_once ('/Users/nk/github/DoorKeys/function.php');
 
 session_start();
+
+$tool_name = $_SESSION["NAME_TOOL"];
+$tool_email = $_SESSION["EMAIL_TOOL"];
+$tool_session_password = $_SESSION["PASSWORD_TOOL"];
+$tool_img = $_SESSION["IMG_TOOL"];
+
+//ログインしていない場合　ログイン画面にリダイレクト
+if (!isset($_SESSION["EMAIL_TOOL"]) || (!isset($_SESSION["NAME_TOOL"]))) {
+  header('Location: http://localhost:8888/tool_login.php');
+  exit();
+}
+
 $link = get_db_connect($link);
 
 // リクエストメソッド取得
@@ -47,8 +59,7 @@ if ($request_method === 'POST') {
 
     $result = mysqli_query($link, $sign_up);
 
-    header('Location: http://localhost:8888/login.php');
-    exit();
+    $msg[] = '登録完了';
 
   }else{
     $error[] = '登録失敗';
@@ -75,6 +86,12 @@ close_db_connect($link);
      <h1>新規登録</h1>
      <ul>
        <?php
+       if (count($msg) !== 0 ) {
+           foreach($msg as $msg_msg) { ?>
+           <li id="success"><?php print $msg_msg; ?></li>
+           <?php }
+       } ?>
+       <?php
        if (count($error) !== 0 ) {
            foreach($error as $error_msg) { ?>
            <li id="error"><?php print $error_msg; ?></li>
@@ -83,16 +100,16 @@ close_db_connect($link);
      </ul>
      <form method="POST"　action="signUp.php">
        <label for="text">ユーザー名</label>
-       <input type="text" name="username">
+       <input type="text" name="username" value="<?php echo entity_str($username); ?>">
        <label for="email">メールアドレス</label>
-       <input type="email" name="email">
+       <input type="email" name="email" value="<?php echo entity_str($email); ?>">
        <label for="password">パスワード</label>
        <input type="password" name="password">
        <label for="password2">パスワード再入力</label>
        <input type="password" name="password2">
-       <button type="submit" name="button">登録</button>
+       <button type="button" onclick="submit();" name="button">登録</button>
      </form>
-     <p><a href="login.php">ログインはこちら</a></p>
+     <p><a href="tool.php">管理画面に戻る</a></p>
    </div>
  </body>
  <footer>

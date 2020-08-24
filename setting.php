@@ -29,7 +29,6 @@ if ($request_method === 'POST') {
     $comment = get_post_data('comment');
 
     //エラーチェック
-    //エラーチェック
     if (error_check_trim($comment) !== true) {
         $error [] = '抱負を入力してください';
     }

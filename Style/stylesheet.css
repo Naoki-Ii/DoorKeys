@@ -1,6 +1,7 @@
 /*全体のcss*/
-body,html{width: 100%;height: 100%;}
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+1p');
 
+body,html{width: 100%;height: 100%;}
 h1,h2,h3,h4,h5,p,ul,ol,li,dl,dt,dd,form,figure,form,input,textarea {margin: 0px;padding: 0px;font-size: 100%;font-weight: normal;}
 ul {list-style-type: none;}
 table {border-collapse:collapse;font-size: 100%;border-spacing: 0;}
@@ -9,7 +10,8 @@ a{text-decoration: none;}
 body {
   margin: 0 auto;
   background:#fff3a9;
-  font-family:"游明朝",YuMincho,"ヒラギノ明朝　ProN W3","Hiragino Mincho ProN","HG明朝E","MS P明朝","MS 明朝",serif;
+  /*font-family:"游明朝",YuMincho,"ヒラギノ明朝　ProN W3","Hiragino Mincho ProN","HG明朝E","MS P明朝","MS 明朝",serif;*/
+  font-family: "M PLUS 1p";
 }
 
 /*header 共通css*/
@@ -70,9 +72,11 @@ header .login-text{
 /*メッセージ　カラー*/
 #error{
   color: #ff0000;
+  font-size: 25px;
 }
-#msg{
+#success{
   color: #0000ff;
+  font-size: 25px;
 }
 
 .sub-container h1 {
@@ -142,7 +146,7 @@ padding:10px;
 }
 
 .friend-task{
-  width: 700px;
+  width: 600px;
   word-wrap: break-word;
   display: inline-block;
 }
@@ -155,6 +159,14 @@ padding:10px;
   border-radius: 20px;
 }
 
+.friend-list button{
+  float: right;
+}
+.friend-list p{
+  margin-bottom: 20px;
+  font-size: 25px;
+  text-align: center;
+}
 /*bbs表示用css*/
 .bbs_display {
 margin: 0 auto;
@@ -164,8 +176,11 @@ padding:10px;
 font-size: 25px;
 text-align: center;
 }
+.bbs_display_tool{
+  margin-bottom: +50px;
+}
 
-.bbs_display form {
+.bbs_display .bbs_display_form {
   margin-top: 20px;
 }
 
@@ -184,6 +199,9 @@ text-align: center;
   margin-right: 30px;
 }
 
+.bbs_display #bbs_display_li button{
+  float: right;
+}
 .bbs_display img{
   height: 40px;
   margin: 10px;
@@ -236,7 +254,7 @@ text-align: center;
 .setting_display .psw_display input{
   display: block;
 }
-.setting
+
 /*loginページのcss*/
 .session{
   width: 500px;

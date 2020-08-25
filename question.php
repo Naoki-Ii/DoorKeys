@@ -1,5 +1,4 @@
 <?php
-
 require_once ('/Users/nk/github/DoorKeys/conf.php');
 require_once ('/Users/nk/github/DoorKeys/function.php');
 
@@ -16,8 +15,17 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   header('Location: http://localhost:8888/login.php');
   exit();
 }
-?>
 
+//初期化
+$_SESSION["pc_exprience"] = '';
+$_SESSION["office"] = '';
+$_SESSION["it_experience"] = '';
+$_SESSION["hobby"] = '';
+$_SESSION["easy_diff"] = '';
+$_SESSION["interest"] = '';
+$_SESSION["risk"] = '';
+
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -62,9 +70,16 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
            <p>設定</p>
          </div>
        </a>
-     </div>
+    </div>
    <div class="sub-container">
+     <div class="question-list">
+       <form  action ='1pc-exp.php' method="post">
+           <h1>業務適正アンケート</h1>
+           <button type="submit" name="start"><img src="man.png"></button>
+       </form>
+     </div>
    </div>
+ </div>
  </main>
 
  <footer>

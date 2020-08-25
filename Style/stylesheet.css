@@ -150,7 +150,8 @@ padding:10px;
   word-wrap: break-word;
   display: inline-block;
 }
-.friend-list li {
+
+.friend-list .friend-list-li{
   margin:0 auto;
   margin-bottom: 30px;
   padding: 15px;
@@ -158,7 +159,9 @@ padding:10px;
   background-color: #FFFFFF;
   border-radius: 20px;
 }
-
+.friend-list .friend-list-tool .friend-list-li{
+  padding: +35px;
+}
 .friend-list button{
   float: right;
 }
@@ -220,6 +223,20 @@ text-align: center;
   text-align: right;
 }
 /*question.php表示用 css*/
+
+/*.question-list{}*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*setting.php表示用の css*/
 .setting_display {

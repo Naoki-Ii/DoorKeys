@@ -1,4 +1,5 @@
 <?php
+
 require_once ('/Users/nk/github/DoorKeys/conf.php');
 require_once ('/Users/nk/github/DoorKeys/function.php');
 
@@ -8,6 +9,11 @@ $tool_email = $_SESSION["EMAIL_TOOL"];
 $tool_session_password = $_SESSION["PASSWORD_TOOL"];
 $tool_img = $_SESSION["IMG_TOOL"];
 
+$diary_list = $_SESSION["diary_list"];
+$username = $_SESSION["name_list"];
+$email = $_SESSION["email_list"];
+$user_img = $_SESSION["img_list"];
+
 //ログインしていない場合　ログイン画面にリダイレクト
 if (!isset($_SESSION["EMAIL_TOOL"]) || (!isset($_SESSION["NAME_TOOL"]))) {
   header('Location: http://localhost:8888/tool_login.php');
@@ -15,16 +21,52 @@ if (!isset($_SESSION["EMAIL_TOOL"]) || (!isset($_SESSION["NAME_TOOL"]))) {
 }
 //データベース接続
 $link = get_db_connect($link);
+// リクエストメソッド取得
+$request_method = get_request_method();
 
-//ユーザー一覧内容取得
-$user_list = get_user_table_list_tool($link);
+if($request_method === 'POST'){
 
-//特殊文字をエンティティに変換
-$user_table = entity_assoc_array($user_list);
+  //削除ボタンが押された時のみ実行
 
+  if(isset($_POST['friend_list_delete']) === TRUE){
+    $user_id = get_post_data('friend_list_delete');
+
+    //ユーザー情報削除
+    $delete_user = delete_user_data($link, $user_id);
+
+    if($delete_user === TRUE){
+      $msg[] = '削除完了';
+      //ユーザーdiary削除
+      $delete_diary = delete_user_diary($link, $user_id);
+    }else {
+      $error[] = '削除失敗';
+    }
+  }
+
+  if(isset($_POST['friend_list_diary']) === TRUE){
+    $user_email = get_post_data('friend_list_diary');
+    //ユーザー予定内容取得
+    $diary_list = get_diary_table_list($link, $user_email);
+
+    //特殊文字をエンティティに変換
+    $diary_table = entity_assoc_array($diary_list);
+
+    //ユーザー名
+    $user_name = get_userdata_name($link,$email);
+
+    //ユーザー画像
+    $user_img = get_userdata_img($link, $email);
+
+    $_SESSION["diary_list"] = $diary_list;
+    $_SESSION["name_list"] = $user_name;
+    $_SESSION["email_list"] = $user_email;
+    $_SESSION["img_list"] = $user_img;
+  }
+}
 //データベース切断
 close_db_connect($link);
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -62,8 +104,7 @@ close_db_connect($link);
     </div>
    <div class="sub-container">
      <div class="friend-list">
-       <div class="friend-list-tool">
-         <p><a href="signUp.php">新規登録はこちら(ユーザー登録)</a></p>
+       <div class="friend-list-diary-tool">
          <ul>
            <?php
            if (count($error) !== 0 ) {
@@ -77,17 +118,20 @@ close_db_connect($link);
                <li id="success"><?php echo $msg_display; ?></li>
              <?php }
            }?>
-           <?php  foreach ($user_table as $value){?>
-           <li class="friend-list-li">
-             <img src="<?php echo $value['user_img'];?>">
-             <span class="friend-name"><?php echo $value['user_name'];?></span>
-             <span class="friend-task"><?php echo $value['user_task'];?></span>
-             <form action="tool_diary.php" method="post">
-               <button type="submit" name="friend_list_diary" value="<?php echo $value['user_email']; ?>">詳細を見る</button>
-             </form>
-           </li>
-         <?php }?>
+           <img src="<?php echo entity_str($user_img) ?>" alt="user_logo">
+           <p><?php echo entity_str($user_name); ?></p>
+           <?php foreach($diary_table as $value) { ?>
+            <li><?php print $value['user_diary']. ' - '. $value['user_date']; ?></li>
+          <?php } ?>
          </ul>
+         <form method="post">
+           <button type="submit" name="friend_list_password_reset" value="<?php echo entity_str($email); ?>">パスワード再設定</button>
+
+         </form>
+         <form method="post">
+           <button type="submit" name="friend_list_delete" value="<?php echo entity_str($email); ?>">アカウント削除</button>
+        </form>
+         <a href="tool.php">社員一覧に戻る</a>
        </div>
      </div>
    </div>

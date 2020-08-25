@@ -1,7 +1,7 @@
 <?php
-
 require_once ('/Users/nk/github/DoorKeys/conf.php');
 require_once ('/Users/nk/github/DoorKeys/function.php');
+
 
 session_start();
 
@@ -17,18 +17,12 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   exit();
 }
 
-//データベース接続
-$link = get_db_connect($link);
-//ユーザー一覧内容取得
-$user_list = get_user_table_list($link, $email);
+if($_SESSION["pc_exprience"] === '' || isset($_SESSION["pc_exprience"]) === FALSE){
+  header('Location: http://localhost:8888/question.php');
+  exit();
+}
 
-//特殊文字をエンティティに変換
-$user_table = entity_assoc_array($user_list);
-
-//データベース切断
-close_db_connect($link);
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -73,19 +67,20 @@ close_db_connect($link);
            <p>設定</p>
          </div>
        </a>
-     </div>
+    </div>
    <div class="sub-container">
-     <div class="friend-list">
-       <ul><?php  foreach ($user_table as $value){?>
-         <li class="friend-list-li">
-           <img src="<?php echo $value['user_img'];?>">
-           <span class="friend-name"><?php echo $value['user_name'];?></span>
-           <span class="friend-task"><?php echo $value['user_task'];?></span>
-         </li>
-       <?php }?>
-       </ul>
+     <div class="question-list">
+       <form action="3it-exp.php" method="post">
+         <h1>Q: officeの使用経験はありますか？</h1>
+         <input type="radio" name="office" value="true" checked>
+         <label>はい</label>
+         <input type="radio" name="office" value="false">
+         <label>いいえ</label>
+        <button type="submit" name="2">次へ</button>
+       </form>
      </div>
    </div>
+ </div>
  </main>
 
  <footer>

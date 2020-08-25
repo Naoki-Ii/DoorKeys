@@ -1,5 +1,4 @@
 <?php
-
 require_once ('/Users/nk/github/DoorKeys/conf.php');
 require_once ('/Users/nk/github/DoorKeys/function.php');
 
@@ -17,18 +16,33 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   exit();
 }
 
-//データベース接続
-$link = get_db_connect($link);
-//ユーザー一覧内容取得
-$user_list = get_user_table_list($link, $email);
+if($_SESSION["pc_exprience"] === '' || isset($_SESSION["pc_exprience"]) === FALSE){
+  header('Location: http://localhost:8888/question.php');
+  exit();
+}
 
-//特殊文字をエンティティに変換
-$user_table = entity_assoc_array($user_list);
+$post = get_request_method();
+if($post === 'POST'){
+  $hobby = get_post_data('hobby');
 
-//データベース切断
-close_db_connect($link);
+  if($hobby === 'illustration'){
+    $_SESSION["hobby"] = 'a';
+  }else if($hobby === 'game'){
+    $_SESSION["hobby"] = 'b';
+  }else if($hobby === 'puzzle'){
+    $_SESSION["hobby"] = 'c';
+  }else if($hobby === 'math'){
+    $_SESSION["hobby"] = 'd';
+  }else if($hobby === 'education'){
+    $_SESSION["hobby"] = 'e';
+  }else if($hobby === 'degign'){
+    $_SESSION["hobby"] = 'f';
+  }
+
+
+}
+
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -73,19 +87,20 @@ close_db_connect($link);
            <p>設定</p>
          </div>
        </a>
-     </div>
+    </div>
    <div class="sub-container">
-     <div class="friend-list">
-       <ul><?php  foreach ($user_table as $value){?>
-         <li class="friend-list-li">
-           <img src="<?php echo $value['user_img'];?>">
-           <span class="friend-name"><?php echo $value['user_name'];?></span>
-           <span class="friend-task"><?php echo $value['user_task'];?></span>
-         </li>
-       <?php }?>
-       </ul>
+     <div class="question-list">
+       <form action="6difficulty.php" method="post">
+         <h1>Q:どちらかというと自分の作品（成果物）を多くの人に見てもらいたい</h1>
+         <input type="radio" name="self_reveal" value="true" checked>
+         <label>そう思う</label>
+         <input type="radio" name="self_reveal" value="false">
+         <label>まったく思わない</label>
+        <button type="submit" name="button">次へ</button>
+       </form>
      </div>
    </div>
+ </div>
  </main>
 
  <footer>

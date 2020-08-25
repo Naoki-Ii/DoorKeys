@@ -26,8 +26,11 @@ if ($request_method === 'POST') {
   if(isset($_POST['bbs_delete']) === TRUE){
     $comment_id = get_post_data('bbs_delete');
 
-    delete_user_bbs_comment($link, $comment_id);
-    $msg[] = '削除完了';
+    if (delete_user_bbs_comment($link, $comment_id) === TRUE){
+      $msg[] = '削除完了';
+    }else {
+      $error[] = '削除失敗';
+    }
   }
 }
 //コメント表示内容を取得

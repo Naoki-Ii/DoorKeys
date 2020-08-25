@@ -1,5 +1,4 @@
 <?php
-
 require_once ('/Users/nk/github/DoorKeys/conf.php');
 require_once ('/Users/nk/github/DoorKeys/function.php');
 
@@ -17,18 +16,21 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   exit();
 }
 
-//データベース接続
-$link = get_db_connect($link);
-//ユーザー一覧内容取得
-$user_list = get_user_table_list($link, $email);
+if($_SESSION["pc_exprience"] === '' || isset($_SESSION["pc_exprience"]) === FALSE){
+  header('Location: http://localhost:8888/question.php');
+  exit();
+}
 
-//特殊文字をエンティティに変換
-$user_table = entity_assoc_array($user_list);
-
-//データベース切断
-close_db_connect($link);
+$post = get_request_method();
+if($post === 'POST'){
+  $easy_diff = get_post_data('easy_diff');
+  if($easy_diff === 'true'){
+    $_SESSION["easy_diff"] = 'a';
+  }else if($easy_diff === 'false'){
+    $_SESSION["easy_diff"] === 'b';
+  }
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -73,19 +75,28 @@ close_db_connect($link);
            <p>設定</p>
          </div>
        </a>
-     </div>
+    </div>
    <div class="sub-container">
-     <div class="friend-list">
-       <ul><?php  foreach ($user_table as $value){?>
-         <li class="friend-list-li">
-           <img src="<?php echo $value['user_img'];?>">
-           <span class="friend-name"><?php echo $value['user_name'];?></span>
-           <span class="friend-task"><?php echo $value['user_task'];?></span>
-         </li>
-       <?php }?>
-       </ul>
+     <div class="question-list">
+       <form action="8return.php" method="post">
+         <h1>最も興味のある分野を一つ選択してください</h1>
+         <input type="radio" name="interest" value="web" checked>
+         <label>Webアプリケーションの作成</label>
+         <input type="radio" name="interest" value="sumaho">
+         <label>スマホアプリ開発</label>
+         <input type="radio" name="interest" value="AI">
+         <label>人工知能（AI）</label>
+         <input type="radio" name="interest" value="server">
+         <label>サーバーの構築、保守</label>
+         <input type="radio" name="interest" value="system">
+         <label>システム構築、保守</label>
+         <input type="radio" name="interest" value="HR">
+         <label>事務・人事</label>
+        <button type="submit" name="button">次へ</button>
+       </form>
      </div>
    </div>
+ </div>
  </main>
 
  <footer>

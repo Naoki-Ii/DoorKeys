@@ -17,18 +17,27 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   exit();
 }
 
-//データベース接続
-$link = get_db_connect($link);
-//ユーザー一覧内容取得
-$user_list = get_user_table_list($link, $email);
+if($_SESSION["pc_exprience"] === '' || isset($_SESSION["pc_exprience"]) === FALSE){
+  header('Location: http://localhost:8888/question.php');
+  exit();
+}
 
-//特殊文字をエンティティに変換
-$user_table = entity_assoc_array($user_list);
+$post = get_request_method();
+if($post === 'POST'){
+  $it_experience = get_post_data('it_experience');
 
-//データベース切断
-close_db_connect($link);
+  if(isset($_SESSION["office"]) === TRUE){
+
+    if($it_experience === 'true'){
+      $_SESSION["it_experience"] = '経験したことのあるPC言語を継続するとよいでしょう。新たな言語に挑戦するのもよいですが、今までの経験を活かすことでより深いPC言語の理解につながります。';
+
+    }else if($it_experience === 'false'){
+      $_SESSION["it_experience"] = 'IT経験がない場合にはより簡単な難易度のPC言語の習得やPCに関する知識をつけるために、ITパスポートなどの資格の取得に挑戦してみることを推奨します';
+    }
+  }
+}
+
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -73,19 +82,28 @@ close_db_connect($link);
            <p>設定</p>
          </div>
        </a>
-     </div>
+    </div>
    <div class="sub-container">
-     <div class="friend-list">
-       <ul><?php  foreach ($user_table as $value){?>
-         <li class="friend-list-li">
-           <img src="<?php echo $value['user_img'];?>">
-           <span class="friend-name"><?php echo $value['user_name'];?></span>
-           <span class="friend-task"><?php echo $value['user_task'];?></span>
-         </li>
-       <?php }?>
-       </ul>
+     <div class="question-list">
+       <form action="5showing.php" method="post">
+         <h1>最も興味のあるものを一つ選択してください</h1>
+         <input type="radio" name="hobby" value="illustration" checked>
+         <label>イラスト</label>
+         <input type="radio" name="hobby" value="game">
+         <label>ゲーム</label>
+         <input type="radio" name="hobby" value="puzzle">
+         <label>パズル</label>
+         <input type="radio" name="hobby" value="math">
+         <label>数学</label>
+         <input type="radio" name="hobby" value="education">
+         <label>教育</label>
+         <input type="radio" name="hobby" value="degign">
+         <label>設計</label>
+        <button type="submit" name="button">次へ</button>
+       </form>
      </div>
    </div>
+ </div>
  </main>
 
  <footer>

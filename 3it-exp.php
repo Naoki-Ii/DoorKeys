@@ -17,18 +17,26 @@ if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   exit();
 }
 
-//データベース接続
-$link = get_db_connect($link);
-//ユーザー一覧内容取得
-$user_list = get_user_table_list($link, $email);
+if($_SESSION["pc_exprience"] === '' || isset($_SESSION["pc_exprience"]) === FALSE){
+  header('Location: http://localhost:8888/question.php');
+  exit();
+}
 
-//特殊文字をエンティティに変換
-$user_table = entity_assoc_array($user_list);
 
-//データベース切断
-close_db_connect($link);
+$post = get_request_method();
+if($post === 'POST'){
+  $office = get_post_data('office');
+
+  if($office === 'true'){
+    $_SESSION["office"] = '今後も引き続きタイピング速度の向上の練習、効率の向上ができるようなショートカットキーの練習や、検索力（自身で調べる力）をつけるため、画像検索等の練習を推奨します';
+
+  }else if($office === 'false'){
+    $_SESSION["office"] = '基本的なofficeのソフトの使い方をマスターしておくと良いでしょう。';
+  }
+
+}
+
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -73,19 +81,20 @@ close_db_connect($link);
            <p>設定</p>
          </div>
        </a>
-     </div>
+    </div>
    <div class="sub-container">
-     <div class="friend-list">
-       <ul><?php  foreach ($user_table as $value){?>
-         <li class="friend-list-li">
-           <img src="<?php echo $value['user_img'];?>">
-           <span class="friend-name"><?php echo $value['user_name'];?></span>
-           <span class="friend-task"><?php echo $value['user_task'];?></span>
-         </li>
-       <?php }?>
-       </ul>
+     <div class="question-list">
+       <form action="4hobby.php" method="post">
+         <h1>Q: ITの経験はありますか？</h1>
+         <input type="radio" name="it_experience" value="true" checked>
+         <label>はい</label>
+         <input type="radio" name="it_experience" value="false">
+         <label>いいえ</label>
+        <button type="submit" name="button">次へ</button>
+       </form>
      </div>
    </div>
+ </div>
  </main>
 
  <footer>

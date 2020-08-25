@@ -17,6 +17,102 @@ if (!isset($_SESSION["EMAIL_TOOL"]) || (!isset($_SESSION["NAME_TOOL"]))) {
 //データベース接続
 $link = get_db_connect($link);
 
+//トップ画像変更の場合のみ実行
+if(isset($_POST['submit_img']) === TRUE){
+
+  $img = get_file_data('img');
+  //var_dump($img);
+  //ファイルアップロード
+  $res= get_input_image('img', UPLOADPATH);
+  //var_dump($res);
+
+  if (mb_strlen($img['name']) === 0) {
+    $error [] = '画像が選択されていません';
+  }
+  if ($res['status'] === false) {
+      $error [] = 'ファイル形式が間違っています';
+  }
+
+  if(count($error) === 0){
+    $new_img = change_data_img_tool($link, UPLOADPATH. $res['status'], $tool_email);
+
+    $_SESSION["IMG_TOOL"] = $new_img;
+
+    $tool_img = $_SESSION["IMG_TOOL"];
+
+    $msg[] = '画像変更完了';
+  }
+}
+//ユーザー名変更の場合のみ実行
+if(isset($_POST['submit_user']) === TRUE){
+
+  $name = get_post_data('username');
+  $password = get_post_data('password');
+
+  //エラーチェック
+  if (error_check_trim($name) !== true){
+    $error[] = 'ユーザーネームを入力してください';
+  }
+  if (error_check_trim($password) !== true){
+    $error[] = 'パスワードを入力してください1';
+  }
+  if (error_check_password($password, $tool_session_password) !== true){
+    $error[] = 'パスワードが間違っています';
+  }
+  if(count($error) === 0){
+  $new_user_name = change_data_username_tool($link, $name, $tool_email);
+
+  $_SESSION["NAME_TOOL"] = $new_user_name;
+
+  $tool_name = $_SESSION["NAME_TOOL"];
+
+  $msg[] = '管理者名変更完了';
+  }
+
+
+}
+
+//パスワード変更の時のみ実行
+if(isset($_POST['submit_password']) === TRUE){
+  $password = get_post_data('password');
+  $newpassword1 = get_post_data('newpassword1');
+  $newpassword2 = get_post_data('newpassword2');
+
+  //エラーチェック
+  if (error_check_trim($password) !== true){
+    $error[] = '現在のパスワードを入力してください';
+  }
+  if (error_check_trim($newpassword1) !== true){
+    $error[] = '新しいパスワードを入力してください';
+  }
+  if (error_check_trim($newpassword2) !== true){
+    $error[] = '新しいパスワードを再入力してください';
+  }
+  if (error_check_pw_match($newpassword1, $newpassword2) !== true){
+    $error[] = '新しいパスワードが一致しません';
+  }
+  if (error_check_preg_match($newpassword1) !== true){
+    $error[] = 'パスワードは半角英数字をそれぞれ1文字以上含んだ8文字以上で設定してください';
+  }
+  if (error_check_password($password, $tool_session_password) !== true){
+    $error[] = 'パスワードが間違っています';
+  }else{
+    if (error_check_pw_match($password, $newpassword1) === true){
+      $error[] = '現在と同じパスワードは設定できません';
+    }
+  }
+
+  if (count($error) === 0){
+    $new_password = change_data_password_tool($link, $newpassword1, $tool_email);
+
+    $_SESSION["PASSWORD_TOOL"] = $new_password;
+
+    $tool_session_password = $_SESSION["PASSWORD_TOOL"];
+
+    $msg[] = 'パスワード変更完了';
+  }
+
+}
 //データベース切断
 close_db_connect($link);
 ?>
@@ -57,6 +153,49 @@ close_db_connect($link);
        </a>
     </div>
    <div class="sub-container">
+     <div class="setting_display">
+     <ul>
+       <?php
+       if (count($error) !== 0 ) {
+           foreach($error as $error_msg) { ?>
+           <li id="error"><?php print $error_msg; ?></li>
+           <?php }
+       } ?>
+       <?php
+       if (count($msg) !==0){
+         foreach ($msg as $msg_display) { ?>
+           <li id="success"><?php echo $msg_display; ?></li>
+         <?php }
+       }?>
+     </ul>
+       <form method="post" enctype="multipart/form-data">
+         <h1>メイン画像変更</h1>
+         <img src="<?php echo entity_str($tool_img);?>" alt="tool_img" width="100px">
+         <input type="file" name="img">
+         <button type="submit" name="submit_img">変更</button>
+       </form>
+       <div class="psw_display">
+         <form method="post">
+           <h1>管理者名変更</h1>
+           <p>現在のユーザー名:  <?php echo entity_str($tool_name); ?></p>
+           <label for="name">新しいユーザー名</label>
+           <input type="name" name="username">
+           <label for="password">パスワードを入力</label>
+           <input type="password" name="password">
+           <button type="submit" name="submit_user">変更</button>
+         </form>
+         <form method="post">
+           <h1>パスワード変更</h1>
+           <label for="password">現在のパスワードを入力</label>
+           <input type="password" name="password">
+           <label for="newpassword1">新しいパスワード</label>
+           <input type="password" name="newpassword1">
+           <label for="newpassword2">新しいパスワード(再入力)</label>
+           <input type="password" name="newpassword2">
+           <button type="submit" name="submit_password">変更</button>
+         </form>
+       </div>
+     </div>
    </div>
  </main>
 

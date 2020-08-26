@@ -170,6 +170,45 @@ padding:10px;
   font-size: 25px;
   text-align: center;
 }
+
+
+/*friend_list tool css*/
+.friend-list-diary-tool{
+  background-color: #ffffff;
+  border-radius: 25px;
+  padding:20px;
+}
+
+.friend-list-diary-tool a{
+  font-size: 25px;
+  text-align: center;
+  display: block;
+}
+
+.friend-list-diary-tool label{
+  display: block;
+  font-size: 25px;
+  text-align:center;
+  margin-top:25px;
+}
+.friend-list-diary-tool input{
+  display: block;
+  font-size: 25px;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 25px;
+  margin-top:25px;
+}
+
+.friend-list-diary-tool button{
+  display: block;
+  float: none;
+  text-align: center;
+  font-size: 15px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
 /*bbs表示用css*/
 .bbs_display {
 margin: 0 auto;
@@ -235,9 +274,27 @@ text-align: center;
 
 
 
+/*result.phpのcss*/
+.question-list-result{
+  background-color: #ffffff;
+  border-radius: 25px;
+  padding: 30px;
+}
 
-
-
+.question-list-result p{
+  font-size: 20px;
+  margin: 5px 50px 5px 50px;
+}
+.question-list-result div{
+  text-align: center;
+  font-size: 25px;
+  margin: 20px;
+}
+.question-list-result a{
+  text-align: center;
+  font-size: 20px;
+  display: block;
+}
 /*setting.php表示用の css*/
 .setting_display {
   background-color: #ffffff;
@@ -270,6 +327,21 @@ text-align: center;
 }
 .setting_display .psw_display input{
   display: block;
+}
+
+/*tool delete displayの　css*/
+.tool-delete-display{
+  text-align: center;
+  font-size: 20px;
+}
+.tool-delete-display p{
+  font-size: 30px;
+  color: #0000ff;
+}
+.tool-delete-display div{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #ff0000;
 }
 
 /*loginページのcss*/

@@ -11,6 +11,8 @@ $session_password = $_SESSION["PASSWORD"];
 $user_task = $_SESSION["TASK"];
 $user_img = $_SESSION["IMG"];
 
+$link = get_db_connect($link);
+
 //ログインしていない場合　ログイン画面にリダイレクト
 if (!isset($_SESSION["EMAIL"]) || (!isset($_SESSION["NAME"]))) {
   header('Location: http://localhost:8888/login.php');
@@ -102,8 +104,37 @@ if($post === 'POST'){
     }
   }
 
-}
+  $str_interest = implode(" , ",$_SESSION["interest"]);
+  $str_risk = implode(" , ", $_SESSION["risk"]);
 
+  //結果内容をデータベースに保存
+
+  //アンケートをはじめて実施した場合
+  if(get_user_qa_result($link, $email) === TRUE){
+
+    //情報をインサートする
+    $flag = insert_user_qa_result($link, $email, $_SESSION["pc_exprience"], $_SESSION["office"], $_SESSION["it_experience"], $_SESSION["hobby"], $str_interest, $str_risk);
+
+    if($flag === TRUE){
+      echo '成功';
+    }else{
+      echo '失敗';
+    }
+  //すでにデータがある場合
+  }else if(get_user_qa_result($link, $email) === FALSE){
+
+    //情報をアップデートする
+    $flag = updata_user_qa_result($link, $email, $_SESSION["pc_exprience"], $_SESSION["office"], $_SESSION["it_experience"], $_SESSION["hobby"], $str_interest, $str_risk);
+
+    if($flag === TRUE){
+      echo '成功';
+    }else{
+      echo '失敗';
+    }
+  }
+
+}
+close_db_connect($link);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -151,22 +182,22 @@ if($post === 'POST'){
        </a>
     </div>
    <div class="sub-container">
-     <p>こちらに結果を表示</p>
-     <a href="question.php">もう一度診断する</a>
-     <?php if($_SESSION["interest"] === 'F'){
-       echo $_SESSION["hobby"];
-     }else {?>
-       <?php echo $_SESSION["pc_exprience"]?>
-       <?php echo $_SESSION["office"]?>
-       <?php echo $_SESSION["it_experience"]?>
-       <?php echo $_SESSION["hobby"]?>
-       <?php foreach($_SESSION["interest"] as $value){
-         echo $value;
-       }?>
-       <?php foreach ($_SESSION["risk"] as $value) {
-         echo $value;
-       }?>
-     <?php } ?>
+     <div class="question-list-result">
+       <h1>診断結果</h1>
+       <?php if($_SESSION["interest"] === 'F'){
+         echo $_SESSION["hobby"];
+       }else {?>
+         <p><?php echo $_SESSION["pc_exprience"]?></p>
+         <p><?php echo $_SESSION["office"]?></p>
+         <p><?php echo $_SESSION["it_experience"]?></p>
+         <p><?php echo $_SESSION["hobby"]?></p>
+         <h1>あなたにおすすめの言語</h1>
+         <div><?php echo $str_interest;?></div>
+         <h1>稼げるランキング</h1>
+         <div><?php echo $str_risk; ?></div>
+       <?php }; ?>
+       <a href="question.php">もう一度診断する</a>
+     </div>
    </div>
  </div>
  </main>

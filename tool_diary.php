@@ -24,44 +24,104 @@ $link = get_db_connect($link);
 // リクエストメソッド取得
 $request_method = get_request_method();
 
+
+//////ボタンが押された時の再読み込みのデータ
+//ユーザー予定内容取得
+$diary_list = get_diary_table_list($link, $email);
+//特殊文字をエンティティに変換
+$diary_table = entity_assoc_array($diary_list);
+/////ここまで
+
+
 if($request_method === 'POST'){
 
-  //削除ボタンが押された時のみ実行
-
-  if(isset($_POST['friend_list_delete']) === TRUE){
-    $user_id = get_post_data('friend_list_delete');
-
-    //ユーザー情報削除
-    $delete_user = delete_user_data($link, $user_id);
-
-    if($delete_user === TRUE){
-      $msg[] = '削除完了';
-      //ユーザーdiary削除
-      $delete_diary = delete_user_diary($link, $user_id);
-    }else {
-      $error[] = '削除失敗';
-    }
-  }
-
+  //ページ遷移した時に受け取るポスト
   if(isset($_POST['friend_list_diary']) === TRUE){
-    $user_email = get_post_data('friend_list_diary');
+    $email = get_post_data('friend_list_diary');
     //ユーザー予定内容取得
-    $diary_list = get_diary_table_list($link, $user_email);
+    $diary_list = get_diary_table_list($link, $email);
 
     //特殊文字をエンティティに変換
     $diary_table = entity_assoc_array($diary_list);
 
     //ユーザー名
-    $user_name = get_userdata_name($link,$email);
+    $username = get_userdata_name($link,$email);
 
     //ユーザー画像
     $user_img = get_userdata_img($link, $email);
 
     $_SESSION["diary_list"] = $diary_list;
-    $_SESSION["name_list"] = $user_name;
-    $_SESSION["email_list"] = $user_email;
+    $_SESSION["name_list"] = $username;
+    $_SESSION["email_list"] = $email;
     $_SESSION["img_list"] = $user_img;
   }
+
+  //パスワードリセットボタンが押された時のみ実行
+  if(isset($_POST['friend_list_password_reset']) === TRUE){
+
+    $tool_pass = get_post_data('tool_pass');
+    $email = get_post_data('friend_list_password_reset');
+
+    //エラーチェック
+    if (error_check_trim($tool_pass) !== true){
+      $error[] = 'パスワードを入力してください';
+    }
+    //入力されたパスワードを照合
+    if(password_verify($tool_pass, $tool_session_password) !== TRUE){
+      $error[] = 'パスワードが間違っています';
+    }
+
+    //エラーがない場合のみ実行
+    if(count($error) === 0){
+      $id = get_pass();
+      $ps = password_hash($id, PASSWORD_DEFAULT);
+
+      if(change_user_password_reset($link, $email, $ps) === TRUE){
+        $msg[] = 'ユーザーパスワード再設定　成功';
+      }else{
+        $error[] = 'ユーザーデータが取得できません';
+      }
+    }else{
+      $error[] = 'ユーザーパスワード再設定 失敗';
+    }
+  }
+
+
+  //削除ボタンが押された時のみ実行
+  if(isset($_POST['friend_list_delete']) === TRUE){
+    $user_id = get_post_data('friend_list_delete');
+    $tool_pass = get_post_data('tool_pass');
+
+    //エラーチェック
+    if (error_check_trim($tool_pass) !== true){
+      $error[] = 'パスワードを入力してください';
+    }
+    //入力されたパスワードを照合
+    if(password_verify($tool_pass, $tool_session_password) !== TRUE){
+      $error[] = 'パスワードが間違っています';
+    }
+
+    //ユーザー情報削除
+    if(count($error) === 0){
+      if(delete_user_data($link, $user_id) === TRUE){
+        delete_user_diary($link, $user_id);
+
+        $_SESSION["diary_list"] = '';
+        $_SESSION["name_list"] = '';
+        $_SESSION["email_list"] = '';
+        $_SESSION["img_list"] = '';
+
+        //削除完了画面に移動
+        header('Location: http://localhost:8888/tool_delete.php');
+        exit();
+      }else{
+        $error[] = 'ユーザーデータが取得できません';
+      }
+    }else{
+      $error[] = 'ユーザーアカウント抹消　失敗';
+    }
+  }
+
 }
 //データベース切断
 close_db_connect($link);
@@ -113,22 +173,32 @@ close_db_connect($link);
                <?php }
            } ?>
            <?php
-           if (count($msg) !==0){
+           if (count($msg) !== 0){
              foreach ($msg as $msg_display) { ?>
                <li id="success"><?php echo $msg_display; ?></li>
              <?php }
            }?>
            <img src="<?php echo entity_str($user_img) ?>" alt="user_logo">
-           <p><?php echo entity_str($user_name); ?></p>
+           <p><?php echo entity_str($username); ?></p>
            <?php foreach($diary_table as $value) { ?>
             <li><?php print $value['user_diary']. ' - '. $value['user_date']; ?></li>
           <?php } ?>
          </ul>
+         <h1>メッセージを送る(メールアドレス)</h1>
+         <a href="mailto:<?php echo entity_str($email);?>">メール</a>
          <form method="post">
+           <h1>ユーザーパスワード再設定(パスワード初期化)</h1>
+           <a href="mailto:<?php echo entity_str($email);?>?subject=Androbo %E6%96%B0%E4%BA%BA%E7%A4%BE%E5%93%A1%E5%B0%82%E7%94%A8Doorkeys%E3%81%AE%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%83%AA%E3%82%BB%E3%83%83%E3%83%88%E3%81%AE%E9%80%9A%E7%9F%A5&amp;body=<?php echo entity_str($username);?>%E3%81%95%E3%82%93%E3%80%80%0D%0ADoorkeys%E3%82%92%E3%81%94%E5%88%A9%E7%94%A8%E9%A0%82%E3%81%8D%E8%AA%A0%E3%81%AB%E3%81%82%E3%82%8A%E3%81%8C%E3%81%A8%E3%81%86%E3%81%94%E3%81%96%E3%81%84%E3%81%BE%E3%81%99%E3%80%82%0D%0A%E3%83%AA%E3%82%BB%E3%83%83%E3%83%88%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%AF%5B%5D%E3%81%A7%E3%81%99%E3%80%82%0D%0A%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%81%97%E3%81%9F%E9%9A%9B%E3%81%AF%E8%A8%AD%E5%AE%9A%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%88%E3%82%8A%E6%96%B0%E3%81%97%E3%81%84%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%AB%E5%86%8D%E8%A8%AD%E5%AE%9A%E3%81%97%E3%81%A6%E9%A0%82%E3%81%8D%E3%81%BE%E3%81%99%E3%82%88%E3%81%86%E3%81%94%E5%8D%94%E5%8A%9B%E3%82%92%E3%82%88%E3%82%8D%E3%81%97%E3%81%8F%E3%81%8A%E9%A1%98%E3%81%84%E8%87%B4%E3%81%97%E3%81%BE%E3%81%99%E3%80%82%0D%0A%0D%0AAndrobo Group Doorkeys %E3%80%80%E9%81%8B%E5%96%B6">
+             パスワード初期化の際はこちらからメールを必ず行ってください
+           </a>
+           <label>管理者パスワード入力</label>
+           <input type="password" name="tool_pass">
            <button type="submit" name="friend_list_password_reset" value="<?php echo entity_str($email); ?>">パスワード再設定</button>
-
          </form>
          <form method="post">
+         <h1>ユーザーアカウント抹消</h1>
+         <label>管理者パスワード入力</label>
+         <input type="password" name="tool_pass">
            <button type="submit" name="friend_list_delete" value="<?php echo entity_str($email); ?>">アカウント削除</button>
         </form>
          <a href="tool.php">社員一覧に戻る</a>

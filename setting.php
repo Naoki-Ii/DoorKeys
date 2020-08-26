@@ -112,8 +112,9 @@ if ($request_method === 'POST') {
     if (error_check_trim($password) !== true){
       $error[] = 'パスワードを入力してください1';
     }
-    if (error_check_password($password, $session_password) !== true){
-      $error[] = 'パスワードが間違っています';
+    //入力されたパスワードを照合
+    if(password_verify($password, $session_password) !== TRUE){
+      $error[] = 'パスワードが間違っています。';
     }
     if(count($error) === 0){
     $new_user_name = change_data_username($link, $name, $email);
@@ -150,8 +151,9 @@ if ($request_method === 'POST') {
     if (error_check_preg_match($newpassword1) !== true){
       $error[] = 'パスワードは半角英数字をそれぞれ1文字以上含んだ8文字以上で設定してください';
     }
-    if (error_check_password($password, $session_password) !== true){
-      $error[] = 'パスワードが間違っています';
+    //入力されたパスワードを照合
+    if(password_verify($password, $session_password) !== TRUE){
+      $error[] = 'パスワードが間違っています。';
     }else{
       if (error_check_pw_match($password, $newpassword1) === true){
         $error[] = '現在と同じパスワードは設定できません';
@@ -159,7 +161,8 @@ if ($request_method === 'POST') {
     }
 
     if (count($error) === 0){
-      $new_password = change_data_password($link, $newpassword1, $email);
+      $hash = password_hash($newpassword1, PASSWORD_DEFAULT);
+      $new_password = change_data_password($link, $hash, $email);
 
       $_SESSION["PASSWORD"] = $new_password;
 

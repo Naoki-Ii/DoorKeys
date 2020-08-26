@@ -52,8 +52,11 @@ if ($request_method === 'POST') {
     $error[] = 'パスワードが一致していません';
   }
 
+  //パスワード暗号化
+  $hash = password_hash($password, PASSWORD_DEFAULT);
+
   //書き込み内容を取得
-  $sign_up = get_insert_sign_up($username, $email, $password);
+  $sign_up = get_insert_sign_up($username, $email, $hash);
   //エラーがない場合 クリエ実行
   if(count($error) === 0){
 

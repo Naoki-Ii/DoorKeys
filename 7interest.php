@@ -27,7 +27,7 @@ if($post === 'POST'){
   if($easy_diff === 'true'){
     $_SESSION["easy_diff"] = 'a';
   }else if($easy_diff === 'false'){
-    $_SESSION["easy_diff"] === 'b';
+    $_SESSION["easy_diff"] = 'b';
   }
 }
 ?>
@@ -93,6 +93,7 @@ if($post === 'POST'){
          <input type="radio" name="interest" value="HR">
          <label>事務・人事</label>
         <button type="submit" name="button">次へ</button>
+        <?php echo $_SESSION["interest"]; ?>
        </form>
      </div>
    </div>

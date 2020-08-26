@@ -12,18 +12,20 @@ if ($request_method === 'POST') {
   $email = get_post_data('email');
   $password = get_post_data('password');
 
+  //暗号化されたパスワードを取得
+  $hash = get_user_password($link, $email);
+
   if (error_check_validata($email) !== true){
     $error[] = '入力された値が不正です。';
   }
   if (error_check_duplication_login($link, $email) === true){
-    $error[] = 'メールアドレス又はパスワードが間違っています。1';
+    $error[] = 'メールアドレス又はパスワードが間違っています。';
   }
-  if (error_check_duplication_pw($link, $password) === true){
+  //入力されたパスワードを照合
+  if(password_verify($password, $hash) !== TRUE){
     $error[] = 'メールアドレス又はパスワードが間違っています。2';
   }
-  if (error_check_userdata_compare($link, $email, $password) !== true){
-    $error[] = 'メールアドレス又はパスワードが間違っています。3';
-  }
+
   if (count($error) === 0){
     $user_name = get_userdata_name($link, $email);
     $user_task = get_userdata_task($link, $email);
@@ -31,7 +33,7 @@ if ($request_method === 'POST') {
 
     $_SESSION["EMAIL"] = $email;
     $_SESSION["NAME"] = $user_name;
-    $_SESSION["PASSWORD"] = $password;
+    $_SESSION["PASSWORD"] = $hash;
     $_SESSION["TASK"] = $user_task;
     $_SESSION["IMG"] = $user_img;
 

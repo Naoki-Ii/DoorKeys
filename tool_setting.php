@@ -56,9 +56,11 @@ if(isset($_POST['submit_user']) === TRUE){
   if (error_check_trim($password) !== true){
     $error[] = 'パスワードを入力してください1';
   }
-  if (error_check_password($password, $tool_session_password) !== true){
+  //入力されたパスワードを照合
+  if(password_verify($password, $tool_session_password) !== TRUE){
     $error[] = 'パスワードが間違っています';
   }
+
   if(count($error) === 0){
   $new_user_name = change_data_username_tool($link, $name, $tool_email);
 
@@ -94,7 +96,8 @@ if(isset($_POST['submit_password']) === TRUE){
   if (error_check_preg_match($newpassword1) !== true){
     $error[] = 'パスワードは半角英数字をそれぞれ1文字以上含んだ8文字以上で設定してください';
   }
-  if (error_check_password($password, $tool_session_password) !== true){
+  //入力されたパスワードを照合
+  if(password_verify($password, $tool_session_password) !== TRUE){
     $error[] = 'パスワードが間違っています';
   }else{
     if (error_check_pw_match($password, $newpassword1) === true){
@@ -103,7 +106,8 @@ if(isset($_POST['submit_password']) === TRUE){
   }
 
   if (count($error) === 0){
-    $new_password = change_data_password_tool($link, $newpassword1, $tool_email);
+    $hash = password_hash($newpassword1, PASSWORD_DEFAULT);
+    $new_password = change_data_password_tool($link, $hash, $tool_email);
 
     $_SESSION["PASSWORD_TOOL"] = $new_password;
 

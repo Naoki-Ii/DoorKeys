@@ -12,25 +12,28 @@ if ($request_method === 'POST') {
   $tool_email = get_post_data('email');
   $tool_password = get_post_data('password');
 
+  //暗号化されたパスワードを取得
+  $hash = get_user_password_tool($link, $tool_email);
+
   if (error_check_validata($tool_email) !== true){
     $error[] = '入力された値が不正です。';
   }
   if (error_check_duplication_login_tool($link, $tool_email) === true){
-    $error[] = 'メールアドレス又はパスワードが間違っています。1';
+    $error[] = 'メールアドレス又はパスワードが間違っています。';
   }
-  if (error_check_duplication_pw_tool($link, $tool_password) === true){
+  //入力されたパスワードを照合
+
+  if(password_verify($tool_password, $hash) !== TRUE){
     $error[] = 'メールアドレス又はパスワードが間違っています。2';
   }
-  if (error_check_userdata_compare_tool($link, $tool_email, $tool_password) !== true){
-    $error[] = 'メールアドレス又はパスワードが間違っています。3';
-  }
+
   if (count($error) === 0){
     $tool_name = get_userdata_name_tool($link, $tool_email);
     $tool_img = get_userdata_img_tool($link, $tool_email);
 
     $_SESSION["EMAIL_TOOL"] = $tool_email;
     $_SESSION["NAME_TOOL"] = $tool_name;
-    $_SESSION["PASSWORD_TOOL"] = $tool_password;
+    $_SESSION["PASSWORD_TOOL"] = $hash;
     $_SESSION["IMG_TOOL"] = $tool_img;
 
     header('Location: http://localhost:8888/tool.php');
@@ -70,7 +73,7 @@ close_db_connect($link);
       </ul>
      <form method="post">
        <label for="email">メールアドレス</label>
-       <input type="email" name="email" value="<?php echo entity_str($email); ?>">
+       <input type="email" name="email" value="<?php echo entity_str($tool_email); ?>">
        <label for="password">パスワード</label>
        <input type="password" name="password">
        <button type="button" onclick="submit();">ログイン</button>

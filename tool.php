@@ -34,7 +34,7 @@ close_db_connect($link);
 </head>
 <body>
   <header>
-    <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+    <p id="logo_img"><a href="tool.php"><img src="Images/logo-image.png"></a></p>
     <div class="login-text">
       <img src="<?php echo entity_str($tool_img); ?>" alt="tool_img">
       <?php echo 'ようこそ  '. entity_str($tool_name). '  さん';?>
@@ -46,17 +46,17 @@ close_db_connect($link);
      <div class="main-container">
        <a href="tool.php">
          <div class="side-box">
-           <p>社員一覧</p>
+           <p><img src="Images/friend-logo.png" alt="friend-logo">社員</p>
          </div>
        </a>
        <a href="tool_bbs.php">
          <div class="side-box">
-           <p>書き込み一覧</p>
+           <p><img src="Images/bbs-logo.png" alt="bbs-logo">書き込み</p>
          </div>
        </a>
        <a href="tool_setting.php">
          <div class="side-box">
-           <p>設定</p>
+           <p><img src="Images/setting-logo.png" alt="setting-logo">設定</p>
          </div>
        </a>
     </div>

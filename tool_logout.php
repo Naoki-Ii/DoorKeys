@@ -27,7 +27,7 @@ session_destroy();
     </head>
     <header>
         <div class="container">
-          <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+          <p id="logo_img"><a href="tool.php"><img src="Images/logo-image.png"></a></p>
           </div>
         </div>
     </header>

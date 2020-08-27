@@ -112,28 +112,47 @@ if($post === 'POST'){
   //アンケートをはじめて実施した場合
   if(get_user_qa_result($link, $email) === TRUE){
 
-    //情報をインサートする
-    $flag = insert_user_qa_result($link, $email, $_SESSION["pc_exprience"], $_SESSION["office"], $_SESSION["it_experience"], $_SESSION["hobby"], $str_interest, $str_risk);
+    if($_SESSION["interest"] === 'F'){
 
-    if($flag === TRUE){
-      echo '成功';
+      $flag = insert_user_qa_result_hobby($link, $email, $_SESSION["hobby"]);
+
+      if($flag !== TRUE){
+        $error[] = '診断結果保存失敗';
+      }
     }else{
-      echo '失敗';
+      //情報をインサートする
+      $flag = insert_user_qa_result($link, $email, $_SESSION["pc_exprience"], $_SESSION["office"], $_SESSION["it_experience"], $_SESSION["hobby"], $str_interest, $str_risk);
+
+      if($flag !== TRUE){
+        $error[] = '診断結果保存　失敗';
+      }
     }
   //すでにデータがある場合
-  }else if(get_user_qa_result($link, $email) === FALSE){
+}else if(get_user_qa_result($link, $email) === FALSE){
 
-    //情報をアップデートする
-    $flag = updata_user_qa_result($link, $email, $_SESSION["pc_exprience"], $_SESSION["office"], $_SESSION["it_experience"], $_SESSION["hobby"], $str_interest, $str_risk);
+    //以前のデータを削除する
+    $flag = delete_user_qa_result($link, $email);
 
     if($flag === TRUE){
-      echo '成功';
-    }else{
-      echo '失敗';
-    }
-  }
 
+      if($_SESSION["interest"] === 'F'){
+        $flag = insert_user_qa_result_hobby($link, $email, $_SESSION["hobby"]);
+        if($flag !== TRUE){
+          $error[] = '診断結果保存 失敗';
+        }
+        }else{
+          //情報をインサートする
+          $flags = insert_user_qa_result($link, $email, $_SESSION["pc_exprience"], $_SESSION["office"], $_SESSION["it_experience"], $_SESSION["hobby"], $str_interest, $str_risk);
+
+          if($flags !== TRUE){
+            $error[] = '診断結果保存 失敗';
+          }
+        }
+      }
+    }
 }
+
+//データベース切断
 close_db_connect($link);
 ?>
 <!DOCTYPE html>
@@ -157,32 +176,40 @@ close_db_connect($link);
      <div class="main-container">
        <a href="index.php">
          <div class="side-box">
-           <p>HOME</p>
+           <p><img src="Images/home-logo.png" alt="home-logo">HOME</p>
          </div>
        </a>
        <a href="friend.php">
          <div class="side-box">
-           <p>同期</p>
+           <p><img src="Images/friend-logo.png" alt="friend-logo">同期</p>
          </div>
        </a>
        <a href="bbs.php">
          <div class="side-box">
-           <p>広場</p>
+           <p><img src="Images/bbs-logo.png" alt="bbs-logo">広場</p>
          </div>
        </a>
        <a href="question.php">
        <div class="side-box">
-         <p>アンケート</p>
+         <p><img src="Images/qa-logo.png" alt="qa-logo">アンケート</p>
        </div>
        </a>
        <a href="setting.php">
          <div class="side-box">
-           <p>設定</p>
+           <p><img src="Images/setting-logo.png" alt="setting-logo">設定</p>
          </div>
        </a>
     </div>
    <div class="sub-container">
      <div class="question-list-result">
+       <ul>
+         <?php
+         if (count($error) !== 0 ) {
+             foreach($error as $error_msg) { ?>
+             <li id="error"><?php print $error_msg; ?></li>
+             <?php }
+         } ?>
+       </ul>
        <h1>診断結果</h1>
        <?php if($_SESSION["interest"] === 'F'){
          echo $_SESSION["hobby"];

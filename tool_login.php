@@ -5,6 +5,10 @@ require_once ('/Users/nk/github/DoorKeys/function.php');
 
 session_start();
 $link = get_db_connect($link);
+
+$error_display = array();
+$flag = TRUE;
+
 // リクエストメソッド取得
 $request_method = get_request_method();
 
@@ -16,15 +20,18 @@ if ($request_method === 'POST') {
   $hash = get_user_password_tool($link, $tool_email);
 
   if (error_check_validata($tool_email) !== true){
-    $error[] = '入力された値が不正です。';
+    $error[] = '入力された値が不正です';
+    $error_display[] = '入力された値が不正です';
   }
   if (error_check_duplication_login_tool($link, $tool_email) === true){
-    $error[] = 'メールアドレス又はパスワードが間違っています。';
+    $error[] = 'メールアドレス又はパスワードが間違っています';
+    $flag = FALSE;
   }
-  //入力されたパスワードを照合
 
+  //入力されたパスワードを照合
   if(password_verify($tool_password, $hash) !== TRUE){
-    $error[] = 'メールアドレス又はパスワードが間違っています。2';
+    $error[] = 'メールアドレス又はパスワードが間違っています';
+    $flag = FALSE;
   }
 
   if (count($error) === 0){
@@ -58,18 +65,21 @@ close_db_connect($link);
    <body>
      <header>
          <div class="container">
-           <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+           <p id="logo_img"><a href="tool.php"><img src="Images/logo-image.png"></a></p>
           </div>
      </header>
     <div class="session">
       <h1>管理　ログイン</h1>
       <ul>
         <?php
-        if (count($error) !== 0 ) {
-            foreach($error as $error_msg) { ?>
+        if (count($error_display) !== 0 ) {
+            foreach($error_display as $error_msg) { ?>
             <li id="error"><?php print $error_msg; ?></li>
             <?php }
         } ?>
+        <?php if($flag === FALSE){ ?>
+          <li id="error"><?php echo 'メールアドレス又はパスワードが間違っています'; ?></li>
+        <?php }; ?>
       </ul>
      <form method="post">
        <label for="email">メールアドレス</label>

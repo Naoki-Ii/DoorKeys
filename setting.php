@@ -110,11 +110,11 @@ if ($request_method === 'POST') {
       $error[] = 'ユーザーネームを入力してください';
     }
     if (error_check_trim($password) !== true){
-      $error[] = 'パスワードを入力してください1';
+      $error[] = 'パスワードを入力してください';
     }
     //入力されたパスワードを照合
     if(password_verify($password, $session_password) !== TRUE){
-      $error[] = 'パスワードが間違っています。';
+      $error[] = 'パスワードが間違っています';
     }
     if(count($error) === 0){
     $new_user_name = change_data_username($link, $name, $email);
@@ -153,7 +153,7 @@ if ($request_method === 'POST') {
     }
     //入力されたパスワードを照合
     if(password_verify($password, $session_password) !== TRUE){
-      $error[] = 'パスワードが間違っています。';
+      $error[] = 'パスワードが間違っています';
     }else{
       if (error_check_pw_match($password, $newpassword1) === true){
         $error[] = '現在と同じパスワードは設定できません';
@@ -200,30 +200,30 @@ close_db_connect($link);
      <div class="main-container">
        <a href="index.php">
          <div class="side-box">
-           <p>HOME</p>
+           <p><img src="Images/home-logo.png" alt="home-logo">HOME</p>
          </div>
        </a>
        <a href="friend.php">
          <div class="side-box">
-           <p>同期</p>
+           <p><img src="Images/friend-logo.png" alt="friend-logo">同期</p>
          </div>
        </a>
        <a href="bbs.php">
          <div class="side-box">
-           <p>広場</p>
+           <p><img src="Images/bbs-logo.png" alt="bbs-logo">広場</p>
          </div>
        </a>
        <a href="question.php">
        <div class="side-box">
-         <p>アンケート</p>
+         <p><img src="Images/qa-logo.png" alt="qa-logo">アンケート</p>
        </div>
        </a>
        <a href="setting.php">
          <div class="side-box">
-           <p>設定</p>
+           <p><img src="Images/setting-logo.png" alt="setting-logo">設定</p>
          </div>
        </a>
-     </div>
+    </div>
    <div class="sub-container">
      <div class="setting_display">
      <ul>

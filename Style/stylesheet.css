@@ -6,7 +6,10 @@ h1,h2,h3,h4,h5,p,ul,ol,li,dl,dt,dd,form,figure,form,input,textarea {margin: 0px;
 ul {list-style-type: none;}
 table {border-collapse:collapse;font-size: 100%;border-spacing: 0;}
 iframe {width: 100%;}
-a{text-decoration: none;}
+a{text-decoration: none; color: #0000ff;}
+a:hover{
+  color: #ff0000;
+}
 body {
   margin: 0 auto;
   background:#fff3a9;
@@ -46,12 +49,20 @@ header .login-text{
   padding: 20px;
   flex: 1;
 }
+.main-container img{
+  height: 40px;
+  margin-right: 5px;
+}
 .side-box{
   border-bottom:1px solid #895a1b;
   background-color: #fff3a9;
   color:#895a1b;
   text-align: left;
   font-size: 40px;
+}
+
+.side-box p{
+  margin-left: 55px;
 }
 .side-box:hover{
   background-color: #dbcc88;
@@ -73,10 +84,12 @@ header .login-text{
 #error{
   color: #ff0000;
   font-size: 25px;
+  padding: 10px;
 }
 #success{
   color: #0000ff;
   font-size: 25px;
+  padding: 10px;
 }
 
 .sub-container h1 {
@@ -194,7 +207,6 @@ padding:10px;
 .friend-list-diary-tool input{
   display: block;
   font-size: 25px;
-  text-align: center;
   margin: 0 auto;
   margin-bottom: 25px;
   margin-top:25px;
@@ -209,6 +221,25 @@ padding:10px;
   margin-bottom: 30px;
 }
 
+.friend-list-diary-tool #error{
+  text-align: left;
+  margin-left: 150px;
+  font-size: 20px;
+  list-style-type: disc;
+
+}
+
+.friend-list-diary-tool #success{
+  text-align: center;
+
+}
+
+.friend-list-diary-tool #tool-diary-list-display{
+  margin-left: 100px;
+  font-size: 20px;
+  padding: 5px;
+  list-style-type: disc;
+}
 /*bbs表示用css*/
 .bbs_display {
 margin: 0 auto;
@@ -261,18 +292,52 @@ text-align: center;
 .bbs_display p{
   text-align: right;
 }
+
 /*question.php表示用 css*/
 
-/*.question-list{}*/
+.question-list {
+  margin:  auto;
+  border-radius:25px;
+  background-color: #ffffff;
+  padding:10px;
+  padding-bottom:40px;
+  font-size: 25px;
+  text-align: left;
+}
 
+.question-list button{
+  display: block;
+  margin: 0 auto;
+}
 
+.question-list img{
+  float: right;
+  height: 100px;
+}
 
+.question-list p{
+  margin-left: 100px;
+  margin-bottom: 10px;
+}
 
+.question-list div{
+  text-align: center;
+  margin-bottom: 10px;
+}
 
+.question-list input{
+  margin-left: 90px;
+  transform: scale(1.5);
+}
 
-
-
-
+.question-list label{
+  margin: 10px;
+  width: 720px;
+  font-size: 20px;
+  margin-right: 90px;
+  word-wrap: break-word;
+  display: inline-block;
+}
 
 /*result.phpのcss*/
 .question-list-result{
@@ -288,13 +353,26 @@ text-align: center;
 .question-list-result div{
   text-align: center;
   font-size: 25px;
-  margin: 20px;
+  margin: 15px;
 }
 .question-list-result a{
   text-align: center;
   font-size: 20px;
   display: block;
 }
+.question-list-result img{
+  height: 90px;
+}
+.question-list-result .start_logo img{
+  height: 200px;
+}
+
+.question-list-result .start_logo{
+  margin: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
 /*setting.php表示用の css*/
 .setting_display {
   background-color: #ffffff;
@@ -302,6 +380,14 @@ text-align: center;
   padding: 30px;
   border-radius: 20px;
   text-align: center;
+}
+
+.setting_display #error{
+  text-align: left;
+  margin-left: 150px;
+  font-size: 20px;
+  list-style-type: disc;
+
 }
 .setting_display label{
   font-size: 25px;

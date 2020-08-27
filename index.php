@@ -52,27 +52,27 @@ close_db_connect($link);
      <div class="main-container">
        <a href="index.php">
          <div class="side-box">
-           <p>HOME</p>
+           <p><img src="Images/home-logo.png" alt="home-logo">HOME</p>
          </div>
        </a>
        <a href="friend.php">
          <div class="side-box">
-           <p>同期</p>
+           <p><img src="Images/friend-logo.png" alt="friend-logo">同期</p>
          </div>
        </a>
        <a href="bbs.php">
          <div class="side-box">
-           <p>広場</p>
+           <p><img src="Images/bbs-logo.png" alt="bbs-logo">広場</p>
          </div>
        </a>
        <a href="question.php">
        <div class="side-box">
-         <p>アンケート</p>
+         <p><img src="Images/qa-logo.png" alt="qa-logo">アンケート</p>
        </div>
        </a>
        <a href="setting.php">
          <div class="side-box">
-           <p>設定</p>
+           <p><img src="Images/setting-logo.png" alt="setting-logo">設定</p>
          </div>
        </a>
     </div>

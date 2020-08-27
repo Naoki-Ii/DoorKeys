@@ -4,6 +4,10 @@ require_once ('/Users/nk/github/DoorKeys/conf.php');
 require_once ('/Users/nk/github/DoorKeys/function.php');
 
 session_start();
+
+$error_display = array();
+$flag = TRUE;
+
 $link = get_db_connect($link);
 // リクエストメソッド取得
 $request_method = get_request_method();
@@ -16,14 +20,17 @@ if ($request_method === 'POST') {
   $hash = get_user_password($link, $email);
 
   if (error_check_validata($email) !== true){
-    $error[] = '入力された値が不正です。';
+    $error[] = '入力された値が不正です';
+    $error_display[] = '入力された値が不正です';
   }
   if (error_check_duplication_login($link, $email) === true){
-    $error[] = 'メールアドレス又はパスワードが間違っています。';
+    $error[] = 'メールアドレス又はパスワードが間違っています';
+    $flag = FALSE;
   }
   //入力されたパスワードを照合
   if(password_verify($password, $hash) !== TRUE){
-    $error[] = 'メールアドレス又はパスワードが間違っています。2';
+    $error[] = 'メールアドレス又はパスワードが間違っています';
+    $flag = FALSE;
   }
 
   if (count($error) === 0){
@@ -66,11 +73,14 @@ close_db_connect($link);
       <h1>ようこそ、ログインしてください。</h1>
       <ul>
         <?php
-        if (count($error) !== 0 ) {
-            foreach($error as $error_msg) { ?>
+        if (count($error_display) !== 0 ) {
+            foreach($error_display as $error_msg) { ?>
             <li id="error"><?php print $error_msg; ?></li>
             <?php }
         } ?>
+        <?php if($flag === FALSE){ ?>
+          <li id="error"><?php echo 'メールアドレス又はパスワードが間違っています'; ?></li>
+        <?php }; ?>
       </ul>
      <form  action="login.php" method="post">
        <label for="email">メールアドレス</label>

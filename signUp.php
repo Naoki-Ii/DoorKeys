@@ -43,10 +43,10 @@ if ($request_method === 'POST') {
     $error[] = 'ユーザーネームを入力してください';
   }
   if (error_check_trim($password) !== true){
-    $error[] = 'パスワードを入力してください1';
+    $error[] = 'パスワードを入力してください';
   }
   if (error_check_trim($password2) !== true){
-    $error[] = 'パスワードを入力してください2';
+    $error[] = 'パスワードを再入力してください';
   }
   if (error_check_pw_match($password, $password2) !==true){
     $error[] = 'パスワードが一致していません';
@@ -81,7 +81,7 @@ close_db_connect($link);
  <body>
    <header>
        <div class="container">
-         <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+         <p id="logo_img"><a href="tool.php"><img src="Images/logo-image.png"></a></p>
          </div>
        </div>
    </header>
@@ -103,9 +103,9 @@ close_db_connect($link);
      </ul>
      <form method="POST"　action="signUp.php">
        <label for="text">ユーザー名</label>
-       <input type="text" name="username" value="<?php echo entity_str($username); ?>">
+       <input type="text" name="username">
        <label for="email">メールアドレス</label>
-       <input type="email" name="email" value="<?php echo entity_str($email); ?>">
+       <input type="email" name="email">
        <label for="password">パスワード</label>
        <input type="password" name="password">
        <label for="password2">パスワード再入力</label>

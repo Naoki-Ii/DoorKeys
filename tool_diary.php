@@ -136,7 +136,7 @@ close_db_connect($link);
 </head>
 <body>
   <header>
-    <p id="logo_img"><a href="index.php"><img src="Images/logo-image.png"></a></p>
+    <p id="logo_img"><a href="tool.php"><img src="Images/logo-image.png"></a></p>
     <div class="login-text">
       <img src="<?php echo entity_str($tool_img); ?>" alt="tool_img">
       <?php echo 'ようこそ  '. entity_str($tool_name). '  さん';?>
@@ -148,17 +148,17 @@ close_db_connect($link);
      <div class="main-container">
        <a href="tool.php">
          <div class="side-box">
-           <p>社員一覧</p>
+           <p><img src="Images/friend-logo.png" alt="friend-logo">社員</p>
          </div>
        </a>
        <a href="tool_bbs.php">
          <div class="side-box">
-           <p>書き込み一覧</p>
+           <p><img src="Images/bbs-logo.png" alt="bbs-logo">書き込み</p>
          </div>
        </a>
        <a href="tool_setting.php">
          <div class="side-box">
-           <p>設定</p>
+           <p><img src="Images/setting-logo.png" alt="setting-logo">設定</p>
          </div>
        </a>
     </div>
@@ -181,15 +181,15 @@ close_db_connect($link);
            <img src="<?php echo entity_str($user_img) ?>" alt="user_logo">
            <p><?php echo entity_str($username); ?></p>
            <?php foreach($diary_table as $value) { ?>
-            <li><?php print $value['user_diary']. ' - '. $value['user_date']; ?></li>
+            <li id="tool-diary-list-display"><?php print $value['user_diary']. ' - '. $value['user_date']; ?></li>
           <?php } ?>
          </ul>
          <h1>メッセージを送る(メールアドレス)</h1>
-         <a href="mailto:<?php echo entity_str($email);?>">メール</a>
+         <a href="mailto:<?php echo entity_str($email);?>"><?php echo entity_str($email); ?></a>
          <form method="post">
            <h1>ユーザーパスワード再設定(パスワード初期化)</h1>
            <a href="mailto:<?php echo entity_str($email);?>?subject=Androbo %E6%96%B0%E4%BA%BA%E7%A4%BE%E5%93%A1%E5%B0%82%E7%94%A8Doorkeys%E3%81%AE%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%83%AA%E3%82%BB%E3%83%83%E3%83%88%E3%81%AE%E9%80%9A%E7%9F%A5&amp;body=<?php echo entity_str($username);?>%E3%81%95%E3%82%93%E3%80%80%0D%0ADoorkeys%E3%82%92%E3%81%94%E5%88%A9%E7%94%A8%E9%A0%82%E3%81%8D%E8%AA%A0%E3%81%AB%E3%81%82%E3%82%8A%E3%81%8C%E3%81%A8%E3%81%86%E3%81%94%E3%81%96%E3%81%84%E3%81%BE%E3%81%99%E3%80%82%0D%0A%E3%83%AA%E3%82%BB%E3%83%83%E3%83%88%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%AF%5B%5D%E3%81%A7%E3%81%99%E3%80%82%0D%0A%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%81%97%E3%81%9F%E9%9A%9B%E3%81%AF%E8%A8%AD%E5%AE%9A%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%88%E3%82%8A%E6%96%B0%E3%81%97%E3%81%84%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%AB%E5%86%8D%E8%A8%AD%E5%AE%9A%E3%81%97%E3%81%A6%E9%A0%82%E3%81%8D%E3%81%BE%E3%81%99%E3%82%88%E3%81%86%E3%81%94%E5%8D%94%E5%8A%9B%E3%82%92%E3%82%88%E3%82%8D%E3%81%97%E3%81%8F%E3%81%8A%E9%A1%98%E3%81%84%E8%87%B4%E3%81%97%E3%81%BE%E3%81%99%E3%80%82%0D%0A%0D%0AAndrobo Group Doorkeys %E3%80%80%E9%81%8B%E5%96%B6">
-             パスワード初期化の際はこちらからメールを必ず行ってください
+             パスワード初期化のメール送信はこちら
            </a>
            <label>管理者パスワード入力</label>
            <input type="password" name="tool_pass">

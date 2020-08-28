@@ -1,6 +1,7 @@
 <?php
-require_once ('/Users/nk/github/DoorKeys/conf.php');
-require_once ('/Users/nk/github/DoorKeys/function.php');
+
+require_once (dirname(__FILE__).'/conf.php');
+require_once (dirname(__FILE__).'/function.php');
 
 session_start();
 
